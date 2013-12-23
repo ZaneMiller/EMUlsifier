@@ -9,12 +9,16 @@ public partial class MainWindow
 	private global::Gtk.Action HelpAction;
 	private global::Gtk.Action refreshAction;
 	private global::Gtk.Action newAction;
+	private global::Gtk.Action addAction;
+	private global::Gtk.Action addAction1;
+	private global::Gtk.Action emuRemoveAction;
+	private global::Gtk.Action emuEditAction;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
-	private global::Gtk.Toolbar toolbar1;
 	private global::Gtk.HPaned hpaned6;
 	private global::Gtk.VBox vbox4;
 	private global::Gtk.Label label1;
+	private global::Gtk.Toolbar EmulatorsToolbar;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TreeView EmulatorTreeView;
 	private global::Gtk.HPaned hpaned7;
@@ -22,6 +26,7 @@ public partial class MainWindow
 	private global::Gtk.Label label2;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 	private global::Gtk.TreeView GameTreeView;
+	private global::Gtk.VBox vbox3;
 
 	protected virtual void Build ()
 	{
@@ -42,6 +47,16 @@ public partial class MainWindow
 		w1.Add (this.refreshAction, null);
 		this.newAction = new global::Gtk.Action ("newAction", null, global::Mono.Unix.Catalog.GetString ("Add Emulator"), "gtk-new");
 		w1.Add (this.newAction, null);
+		this.addAction = new global::Gtk.Action ("addAction", null, null, "gtk-add");
+		w1.Add (this.addAction, null);
+		this.addAction1 = new global::Gtk.Action ("addAction1", null, null, "gtk-add");
+		w1.Add (this.addAction1, null);
+		this.emuRemoveAction = new global::Gtk.Action ("emuRemoveAction", null, global::Mono.Unix.Catalog.GetString ("Remove Emulator"), "gtk-remove");
+		this.emuRemoveAction.Sensitive = false;
+		w1.Add (this.emuRemoveAction, null);
+		this.emuEditAction = new global::Gtk.Action ("emuEditAction", null, global::Mono.Unix.Catalog.GetString ("Edit Emulator"), "gtk-edit");
+		this.emuEditAction.Sensitive = false;
+		w1.Add (this.emuEditAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -51,6 +66,7 @@ public partial class MainWindow
 		this.DefaultHeight = 720;
 		// Container child MainWindow.Gtk.Container+ContainerChild
 		this.vbox1 = new global::Gtk.VBox ();
+		this.vbox1.Name = "vbox1";
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.UIManager.AddUiFromString ("<ui><menubar name=\'menubar2\'><menu name=\'FileAction\' action=\'FileAction\'/><menu n" +
@@ -64,22 +80,10 @@ public partial class MainWindow
 		w2.Expand = false;
 		w2.Fill = false;
 		// Container child vbox1.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><toolbar name=\'toolbar1\'><toolitem name=\'newAction\' action=\'newAction\'/></too" +
-		"lbar></ui>");
-		this.toolbar1 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar1")));
-		this.toolbar1.Name = "toolbar1";
-		this.toolbar1.ShowArrow = false;
-		this.vbox1.Add (this.toolbar1);
-		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.toolbar1]));
-		w3.Position = 1;
-		w3.Expand = false;
-		w3.Fill = false;
-		w3.Padding = ((uint)(5));
-		// Container child vbox1.Gtk.Box+BoxChild
 		this.hpaned6 = new global::Gtk.HPaned ();
 		this.hpaned6.CanFocus = true;
 		this.hpaned6.Name = "hpaned6";
-		this.hpaned6.Position = 1;
+		this.hpaned6.Position = 250;
 		// Container child hpaned6.Gtk.Paned+PanedChild
 		this.vbox4 = new global::Gtk.VBox ();
 		this.vbox4.Name = "vbox4";
@@ -87,10 +91,24 @@ public partial class MainWindow
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.label1 = new global::Gtk.Label ();
 		this.label1.Name = "label1";
-		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("Emulators");
+		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Emulators</b>");
+		this.label1.UseMarkup = true;
 		this.vbox4.Add (this.label1);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.label1]));
-		w4.Position = 0;
+		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.label1]));
+		w3.Position = 0;
+		w3.Expand = false;
+		w3.Fill = false;
+		// Container child vbox4.Gtk.Box+BoxChild
+		this.UIManager.AddUiFromString ("<ui><toolbar name=\'EmulatorsToolbar\'><toolitem name=\'addAction\' action=\'addAction" +
+		"\'/><toolitem name=\'emuRemoveAction\' action=\'emuRemoveAction\'/><toolitem name=\'em" +
+		"uEditAction\' action=\'emuEditAction\'/></toolbar></ui>");
+		this.EmulatorsToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/EmulatorsToolbar")));
+		this.EmulatorsToolbar.Name = "EmulatorsToolbar";
+		this.EmulatorsToolbar.ShowArrow = false;
+		this.EmulatorsToolbar.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
+		this.vbox4.Add (this.EmulatorsToolbar);
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.EmulatorsToolbar]));
+		w4.Position = 1;
 		w4.Expand = false;
 		w4.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
@@ -106,7 +124,7 @@ public partial class MainWindow
 		this.GtkScrolledWindow.Add (this.EmulatorTreeView);
 		this.vbox4.Add (this.GtkScrolledWindow);
 		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.GtkScrolledWindow]));
-		w6.Position = 1;
+		w6.Position = 2;
 		this.hpaned6.Add (this.vbox4);
 		global::Gtk.Paned.PanedChild w7 = ((global::Gtk.Paned.PanedChild)(this.hpaned6 [this.vbox4]));
 		w7.Resize = false;
@@ -114,7 +132,7 @@ public partial class MainWindow
 		this.hpaned7 = new global::Gtk.HPaned ();
 		this.hpaned7.CanFocus = true;
 		this.hpaned7.Name = "hpaned7";
-		this.hpaned7.Position = 1;
+		this.hpaned7.Position = 300;
 		// Container child hpaned7.Gtk.Paned+PanedChild
 		this.vbox5 = new global::Gtk.VBox ();
 		this.vbox5.Name = "vbox5";
@@ -122,7 +140,8 @@ public partial class MainWindow
 		// Container child vbox5.Gtk.Box+BoxChild
 		this.label2 = new global::Gtk.Label ();
 		this.label2.Name = "label2";
-		this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("Games");
+		this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Games</b>");
+		this.label2.UseMarkup = true;
 		this.vbox5.Add (this.label2);
 		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.label2]));
 		w8.Position = 0;
@@ -145,10 +164,15 @@ public partial class MainWindow
 		this.hpaned7.Add (this.vbox5);
 		global::Gtk.Paned.PanedChild w11 = ((global::Gtk.Paned.PanedChild)(this.hpaned7 [this.vbox5]));
 		w11.Resize = false;
+		// Container child hpaned7.Gtk.Paned+PanedChild
+		this.vbox3 = new global::Gtk.VBox ();
+		this.vbox3.Name = "vbox3";
+		this.vbox3.Spacing = 6;
+		this.hpaned7.Add (this.vbox3);
 		this.hpaned6.Add (this.hpaned7);
 		this.vbox1.Add (this.hpaned6);
-		global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
-		w13.Position = 2;
+		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
+		w14.Position = 1;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -156,6 +180,9 @@ public partial class MainWindow
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.newAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
+		this.addAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
+		this.emuRemoveAction.Activated += new global::System.EventHandler (this.RemoveEmulatorButtonOnActivate);
+		this.emuEditAction.Activated += new global::System.EventHandler (this.EditEmulatorButtonOnActivate);
 		this.EmulatorTreeView.CursorChanged += new global::System.EventHandler (this.EmulatorOnCursorChange);
 	}
 }

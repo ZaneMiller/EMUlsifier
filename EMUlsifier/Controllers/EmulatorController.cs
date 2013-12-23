@@ -1,32 +1,39 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.IO;
 
 namespace EMUlsifier
 {
 	public static class EmulatorController
 	{
-		private static List<Emulator> emulators = new List<Emulator> ();
+		public static List<Emulator> emulators = new List<Emulator> ();
 
-		public static List<Emulator> GetEmulators()
+		private static XmlSerializer xs = new XmlSerializer(typeof(emulators));
+
+		private const string LIBRARY_FILE_NAME = "Library.xml";
+
+		private static void LoadEmulators()
 		{
-			Emulator emu = new Emulator ();
-			emu.name = "ZSNES";
-			emulators.Add (emu);
+			using (FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.Open))
+				emulators = xs.Deserialize (fs);
+		}
 
-			Game game = new Game ();
-			game.title = "Donkey Kong";
-			emu.games.Add (game);
-
-
-			emu = new Emulator ();
-			emu.name = "GBA";
-			emulators.Add (emu);
-			game = new Game ();
-			game.title = "Link's Awakening";
-			emu.games.Add (game);
-
-			return emulators;
+		public static bool SaveEmulators(out Exception error)
+		{
+			try
+			{
+				FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.OpenOrCreate);
+				xs.Serialize (fs, emulators);
+			}
+			catch (Exception e)
+			{
+				error = e;
+				return false;
+			}
+			return true;
 		}
 
 	}

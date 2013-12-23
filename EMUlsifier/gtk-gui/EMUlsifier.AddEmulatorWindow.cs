@@ -4,6 +4,39 @@ namespace EMUlsifier
 {
 	public partial class AddEmulatorWindow
 	{
+		private global::Gtk.VBox vbox2;
+		private global::Gtk.Label label1;
+		private global::Gtk.HSeparator hseparator1;
+		private global::Gtk.Frame frame1;
+		private global::Gtk.Alignment GtkAlignment;
+		private global::Gtk.Entry EmulatorNameEntry;
+		private global::Gtk.Label GtkLabel;
+		private global::Gtk.Frame frame4;
+		private global::Gtk.Alignment GtkAlignment3;
+		private global::Gtk.ComboBox SystemTypeCombo;
+		private global::Gtk.Label GtkLabel4;
+		private global::Gtk.Frame frame2;
+		private global::Gtk.Alignment GtkAlignment1;
+		private global::Gtk.HBox hbox1;
+		private global::Gtk.Entry EmulatorPathEntry;
+		private global::Gtk.Button EmulatorPathBrowse;
+		private global::Gtk.Label GtkLabel2;
+		private global::Gtk.Frame frame5;
+		private global::Gtk.Alignment GtkAlignment6;
+		private global::Gtk.HBox hbox2;
+		private global::Gtk.Entry RomPathEntry;
+		private global::Gtk.Button RomPathBrowseButton;
+		private global::Gtk.Label GtkLabel7;
+		private global::Gtk.Frame frame3;
+		private global::Gtk.Alignment GtkAlignment2;
+		private global::Gtk.VBox vbox3;
+		private global::Gtk.Entry EmulatorLaunchArgsEntry;
+		private global::Gtk.Label label2;
+		private global::Gtk.Label GtkLabel3;
+		private global::Gtk.HButtonBox hbuttonbox2;
+		private global::Gtk.Button AddEmulatorButton;
+		private global::Gtk.Button button3;
+
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
@@ -12,12 +45,263 @@ namespace EMUlsifier
 			this.Title = global::Mono.Unix.Catalog.GetString ("EMUlsifier - Add New Emulator");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			this.Modal = true;
+			// Container child EMUlsifier.AddEmulatorWindow.Gtk.Container+ContainerChild
+			this.vbox2 = new global::Gtk.VBox ();
+			this.vbox2.Name = "vbox2";
+			this.vbox2.Spacing = 6;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.label1 = new global::Gtk.Label ();
+			this.label1.Name = "label1";
+			this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b><big>Add New Emulator</big></b>");
+			this.label1.UseMarkup = true;
+			this.vbox2.Add (this.label1);
+			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.label1]));
+			w1.Position = 0;
+			w1.Expand = false;
+			w1.Fill = false;
+			w1.Padding = ((uint)(4));
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.hseparator1 = new global::Gtk.HSeparator ();
+			this.hseparator1.Name = "hseparator1";
+			this.vbox2.Add (this.hseparator1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hseparator1]));
+			w2.Position = 1;
+			w2.Expand = false;
+			w2.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame1 = new global::Gtk.Frame ();
+			this.frame1.Name = "frame1";
+			this.frame1.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment.Name = "GtkAlignment";
+			this.GtkAlignment.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.EmulatorNameEntry = new global::Gtk.Entry ();
+			this.EmulatorNameEntry.CanFocus = true;
+			this.EmulatorNameEntry.Name = "EmulatorNameEntry";
+			this.EmulatorNameEntry.IsEditable = true;
+			this.EmulatorNameEntry.ActivatesDefault = true;
+			this.EmulatorNameEntry.InvisibleChar = '●';
+			this.GtkAlignment.Add (this.EmulatorNameEntry);
+			this.frame1.Add (this.GtkAlignment);
+			this.GtkLabel = new global::Gtk.Label ();
+			this.GtkLabel.Name = "GtkLabel";
+			this.GtkLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Emulator Name:");
+			this.GtkLabel.UseMarkup = true;
+			this.frame1.LabelWidget = this.GtkLabel;
+			this.vbox2.Add (this.frame1);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame1]));
+			w5.Position = 2;
+			w5.Expand = false;
+			w5.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame4 = new global::Gtk.Frame ();
+			this.frame4.Name = "frame4";
+			this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame4.Gtk.Container+ContainerChild
+			this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment3.Name = "GtkAlignment3";
+			this.GtkAlignment3.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment3.Gtk.Container+ContainerChild
+			this.SystemTypeCombo = global::Gtk.ComboBox.NewText ();
+			this.SystemTypeCombo.Name = "SystemTypeCombo";
+			this.GtkAlignment3.Add (this.SystemTypeCombo);
+			this.frame4.Add (this.GtkAlignment3);
+			this.GtkLabel4 = new global::Gtk.Label ();
+			this.GtkLabel4.Name = "GtkLabel4";
+			this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("System:");
+			this.frame4.LabelWidget = this.GtkLabel4;
+			this.vbox2.Add (this.frame4);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame4]));
+			w8.Position = 3;
+			w8.Expand = false;
+			w8.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame2 = new global::Gtk.Frame ();
+			this.frame2.Name = "frame2";
+			this.frame2.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame2.Gtk.Container+ContainerChild
+			this.GtkAlignment1 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment1.Name = "GtkAlignment1";
+			this.GtkAlignment1.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment1.Gtk.Container+ContainerChild
+			this.hbox1 = new global::Gtk.HBox ();
+			this.hbox1.Name = "hbox1";
+			this.hbox1.Spacing = 6;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.EmulatorPathEntry = new global::Gtk.Entry ();
+			this.EmulatorPathEntry.CanFocus = true;
+			this.EmulatorPathEntry.Name = "EmulatorPathEntry";
+			this.EmulatorPathEntry.IsEditable = false;
+			this.EmulatorPathEntry.InvisibleChar = '●';
+			this.hbox1.Add (this.EmulatorPathEntry);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.EmulatorPathEntry]));
+			w9.Position = 0;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.EmulatorPathBrowse = new global::Gtk.Button ();
+			this.EmulatorPathBrowse.CanFocus = true;
+			this.EmulatorPathBrowse.Name = "EmulatorPathBrowse";
+			this.EmulatorPathBrowse.UseUnderline = true;
+			this.EmulatorPathBrowse.Label = global::Mono.Unix.Catalog.GetString ("Browse...");
+			this.hbox1.Add (this.EmulatorPathBrowse);
+			global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.EmulatorPathBrowse]));
+			w10.Position = 1;
+			w10.Expand = false;
+			w10.Fill = false;
+			this.GtkAlignment1.Add (this.hbox1);
+			this.frame2.Add (this.GtkAlignment1);
+			this.GtkLabel2 = new global::Gtk.Label ();
+			this.GtkLabel2.Name = "GtkLabel2";
+			this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("Executable Path:");
+			this.frame2.LabelWidget = this.GtkLabel2;
+			this.vbox2.Add (this.frame2);
+			global::Gtk.Box.BoxChild w13 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame2]));
+			w13.Position = 4;
+			w13.Expand = false;
+			w13.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame5 = new global::Gtk.Frame ();
+			this.frame5.Name = "frame5";
+			this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame5.Gtk.Container+ContainerChild
+			this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment6.Name = "GtkAlignment6";
+			this.GtkAlignment6.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment6.Gtk.Container+ContainerChild
+			this.hbox2 = new global::Gtk.HBox ();
+			this.hbox2.Name = "hbox2";
+			this.hbox2.Spacing = 6;
+			// Container child hbox2.Gtk.Box+BoxChild
+			this.RomPathEntry = new global::Gtk.Entry ();
+			this.RomPathEntry.CanFocus = true;
+			this.RomPathEntry.Name = "RomPathEntry";
+			this.RomPathEntry.IsEditable = false;
+			this.RomPathEntry.InvisibleChar = '●';
+			this.hbox2.Add (this.RomPathEntry);
+			global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.RomPathEntry]));
+			w14.Position = 0;
+			// Container child hbox2.Gtk.Box+BoxChild
+			this.RomPathBrowseButton = new global::Gtk.Button ();
+			this.RomPathBrowseButton.CanFocus = true;
+			this.RomPathBrowseButton.Name = "RomPathBrowseButton";
+			this.RomPathBrowseButton.UseUnderline = true;
+			this.RomPathBrowseButton.Label = global::Mono.Unix.Catalog.GetString ("Browse..._");
+			this.hbox2.Add (this.RomPathBrowseButton);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.RomPathBrowseButton]));
+			w15.Position = 1;
+			w15.Expand = false;
+			w15.Fill = false;
+			this.GtkAlignment6.Add (this.hbox2);
+			this.frame5.Add (this.GtkAlignment6);
+			this.GtkLabel7 = new global::Gtk.Label ();
+			this.GtkLabel7.Name = "GtkLabel7";
+			this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString ("Rom Folder:");
+			this.frame5.LabelWidget = this.GtkLabel7;
+			this.vbox2.Add (this.frame5);
+			global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame5]));
+			w18.Position = 5;
+			w18.Expand = false;
+			w18.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.frame3 = new global::Gtk.Frame ();
+			this.frame3.Name = "frame3";
+			this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame3.Gtk.Container+ContainerChild
+			this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment2.Name = "GtkAlignment2";
+			this.GtkAlignment2.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment2.Gtk.Container+ContainerChild
+			this.vbox3 = new global::Gtk.VBox ();
+			this.vbox3.Name = "vbox3";
+			this.vbox3.Spacing = 6;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.EmulatorLaunchArgsEntry = new global::Gtk.Entry ();
+			this.EmulatorLaunchArgsEntry.CanFocus = true;
+			this.EmulatorLaunchArgsEntry.Name = "EmulatorLaunchArgsEntry";
+			this.EmulatorLaunchArgsEntry.Text = global::Mono.Unix.Catalog.GetString ("%ROM%");
+			this.EmulatorLaunchArgsEntry.IsEditable = true;
+			this.EmulatorLaunchArgsEntry.InvisibleChar = '●';
+			this.vbox3.Add (this.EmulatorLaunchArgsEntry);
+			global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.EmulatorLaunchArgsEntry]));
+			w19.Position = 0;
+			w19.Expand = false;
+			w19.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.label2 = new global::Gtk.Label ();
+			this.label2.Name = "label2";
+			this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("<span foreground=\"grey\">Use %ROM% in place of the game filename</span>");
+			this.label2.UseMarkup = true;
+			this.vbox3.Add (this.label2);
+			global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.label2]));
+			w20.Position = 1;
+			w20.Expand = false;
+			w20.Fill = false;
+			this.GtkAlignment2.Add (this.vbox3);
+			this.frame3.Add (this.GtkAlignment2);
+			this.GtkLabel3 = new global::Gtk.Label ();
+			this.GtkLabel3.Name = "GtkLabel3";
+			this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("Launch Arguments:");
+			this.frame3.LabelWidget = this.GtkLabel3;
+			this.vbox2.Add (this.frame3);
+			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.frame3]));
+			w23.Position = 6;
+			w23.Expand = false;
+			w23.Fill = false;
+			// Container child vbox2.Gtk.Box+BoxChild
+			this.hbuttonbox2 = new global::Gtk.HButtonBox ();
+			this.hbuttonbox2.Name = "hbuttonbox2";
+			this.hbuttonbox2.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
+			// Container child hbuttonbox2.Gtk.ButtonBox+ButtonBoxChild
+			this.AddEmulatorButton = new global::Gtk.Button ();
+			this.AddEmulatorButton.CanFocus = true;
+			this.AddEmulatorButton.Name = "AddEmulatorButton";
+			this.AddEmulatorButton.UseStock = true;
+			this.AddEmulatorButton.UseUnderline = true;
+			this.AddEmulatorButton.Label = "gtk-add";
+			this.hbuttonbox2.Add (this.AddEmulatorButton);
+			global::Gtk.ButtonBox.ButtonBoxChild w24 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.hbuttonbox2 [this.AddEmulatorButton]));
+			w24.Expand = false;
+			w24.Fill = false;
+			// Container child hbuttonbox2.Gtk.ButtonBox+ButtonBoxChild
+			this.button3 = new global::Gtk.Button ();
+			this.button3.CanFocus = true;
+			this.button3.Name = "button3";
+			this.button3.UseStock = true;
+			this.button3.UseUnderline = true;
+			this.button3.Label = "gtk-cancel";
+			this.hbuttonbox2.Add (this.button3);
+			global::Gtk.ButtonBox.ButtonBoxChild w25 = ((global::Gtk.ButtonBox.ButtonBoxChild)(this.hbuttonbox2 [this.button3]));
+			w25.Position = 1;
+			w25.Expand = false;
+			w25.Fill = false;
+			this.vbox2.Add (this.hbuttonbox2);
+			global::Gtk.Box.BoxChild w26 = ((global::Gtk.Box.BoxChild)(this.vbox2 [this.hbuttonbox2]));
+			w26.PackType = ((global::Gtk.PackType)(1));
+			w26.Position = 7;
+			w26.Expand = false;
+			w26.Fill = false;
+			w26.Padding = ((uint)(10));
+			this.Add (this.vbox2);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 400;
-			this.DefaultHeight = 300;
+			this.DefaultWidth = 428;
+			this.DefaultHeight = 408;
 			this.Show ();
+			this.EmulatorNameEntry.FocusOutEvent += new global::Gtk.FocusOutEventHandler (this.AddEmuEntryOnBlur);
+			this.EmulatorNameEntry.Changed += new global::System.EventHandler (this.AddEmuEntryOnChange);
+			this.SystemTypeCombo.FocusOutEvent += new global::Gtk.FocusOutEventHandler (this.AddEmuEntryOnBlur);
+			this.EmulatorPathEntry.FocusOutEvent += new global::Gtk.FocusOutEventHandler (this.AddEmuEntryOnBlur);
+			this.EmulatorPathEntry.Changed += new global::System.EventHandler (this.AddEmuEntryOnChange);
+			this.EmulatorPathBrowse.Clicked += new global::System.EventHandler (this.EmulatorPathOnClick);
+			this.RomPathEntry.FocusOutEvent += new global::Gtk.FocusOutEventHandler (this.AddEmuEntryOnBlur);
+			this.RomPathEntry.Changed += new global::System.EventHandler (this.AddEmuEntryOnChange);
+			this.RomPathBrowseButton.Clicked += new global::System.EventHandler (this.RomPathButtonOnClick);
+			this.EmulatorLaunchArgsEntry.Changed += new global::System.EventHandler (this.AddEmuEntryOnChange);
+			this.EmulatorLaunchArgsEntry.FocusOutEvent += new global::Gtk.FocusOutEventHandler (this.AddEmuEntryOnBlur);
+			this.AddEmulatorButton.Clicked += new global::System.EventHandler (this.AddEmulatorButtonOnClick);
+			this.button3.Clicked += new global::System.EventHandler (this.AddEmuCancelonClick);
 		}
 	}
 }
