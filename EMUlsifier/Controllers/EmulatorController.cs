@@ -11,29 +11,38 @@ namespace EMUlsifier
 	{
 		public static List<Emulator> emulators = new List<Emulator> ();
 
-		private static XmlSerializer xs = new XmlSerializer(typeof(emulators));
+		private static XmlSerializer xs = new XmlSerializer(typeof(List<Emulator>));
 
 		private const string LIBRARY_FILE_NAME = "Library.xml";
 
-		private static void LoadEmulators()
+		public static Exception LoadLibrary()
 		{
-			using (FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.Open))
-				emulators = xs.Deserialize (fs);
+			if (File.Exists (LIBRARY_FILE_NAME)) {
+				using (FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.OpenOrCreate)) {
+					try {
+						emulators = (List<Emulator>)xs.Deserialize (fs);
+					} catch (Exception e) {
+						return e;
+					}
+				}
+			}
+			return null;
 		}
 
-		public static bool SaveEmulators(out Exception error)
+		public static Exception SaveLibrary()
 		{
-			try
+			using (StreamWriter sw = new StreamWriter(LIBRARY_FILE_NAME, false))
 			{
-				FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.OpenOrCreate);
-				xs.Serialize (fs, emulators);
+				try
+				{
+					xs.Serialize(sw, emulators);
+				}
+				catch(Exception e)
+				{
+					return e;
+				}
 			}
-			catch (Exception e)
-			{
-				error = e;
-				return false;
-			}
-			return true;
+			return null;
 		}
 
 	}

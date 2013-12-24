@@ -12,14 +12,50 @@ public partial class MainWindow: Gtk.Window
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
 		Build ();
+		LoadLibrary ();
 		CreateTrees ();
-		//TODO: Load emulators
 	}
 
 	protected void OnDeleteEvent (object sender, DeleteEventArgs a)
 	{
+		SaveLibrary ();
 		Application.Quit ();
 		a.RetVal = true;
+	}
+
+	/// <summary>
+	/// Saves the library.
+	/// If an error occurs saving, alert the user
+	/// </summary>
+	protected void SaveLibrary()
+	{
+		Exception e = EmulatorController.SaveLibrary ();
+		if (e != null)
+		{
+			MessageDialog errorDialog = new MessageDialog (this,
+				                            DialogFlags.Modal,
+				                            MessageType.Error,
+				                            ButtonsType.Ok,
+				                            string.Format ("An error occured while saving the library:\n{0}", e.Message));
+			errorDialog.Run ();
+			errorDialog.Destroy ();
+		}
+	}
+
+	protected void LoadLibrary()
+	{
+		Exception e = EmulatorController.LoadLibrary();
+		if (e != null)
+		{
+			MessageDialog md = new MessageDialog (this,
+				DialogFlags.Modal,
+				MessageType.Error,
+				ButtonsType.Ok,
+				string.Format ("An error occured while loading the library:\n{0}", e.Message)
+			);
+			md.Run ();
+			md.Destroy ();
+		}
 	}
 
 	/// <summary>
