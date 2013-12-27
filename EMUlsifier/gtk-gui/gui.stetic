@@ -63,6 +63,21 @@
         <property name="Tooltip" translatable="yes">Edit Emulator</property>
         <signal name="Activated" handler="EditEmulatorButtonOnActivate" />
       </action>
+      <action id="EditGameAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="Sensitive">False</property>
+        <property name="StockId">gtk-edit</property>
+        <property name="Tooltip" translatable="yes">Edit Game</property>
+      </action>
+      <action id="ScrapeGameAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="Sensitive">False</property>
+        <property name="StockId">gtk-refresh</property>
+        <property name="Tooltip" translatable="yes">Scrape Game Information</property>
+        <signal name="Activated" handler="ScrapeGameOnActivate" />
+      </action>
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">MainWindow</property>
@@ -178,6 +193,22 @@
                       </packing>
                     </child>
                     <child>
+                      <widget class="Gtk.Toolbar" id="GamesToolbar">
+                        <property name="MemberName">GamesToolbar</property>
+                        <property name="ShowArrow">False</property>
+                        <node name="GamesToolbar" type="Toolbar">
+                          <node type="Toolitem" action="EditGameAction" />
+                          <node type="Toolitem" action="ScrapeGameAction" />
+                        </node>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
                       <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
                         <property name="MemberName" />
                         <property name="ShadowType">In</property>
@@ -188,11 +219,12 @@
                             <property name="ShowScrollbars">True</property>
                             <property name="EnableSearch">False</property>
                             <property name="HeadersVisible">False</property>
+                            <signal name="CursorChanged" handler="GamesTreeOnCursorChange" />
                           </widget>
                         </child>
                       </widget>
                       <packing>
-                        <property name="Position">1</property>
+                        <property name="Position">2</property>
                         <property name="AutoSize">True</property>
                       </packing>
                     </child>
@@ -227,20 +259,78 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="EMUlsifier.AddEmulatorWindow" design-size="428 408">
+  <widget class="Gtk.Window" id="EMUlsifier.EmulatorWindow" design-size="584 529">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">EMUlsifier - Add New Emulator</property>
+    <property name="Title" translatable="yes">EMUlsifier - Add/Update Emulator</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
+    <property name="BorderWidth">8</property>
     <child>
       <widget class="Gtk.VBox" id="vbox2">
         <property name="MemberName" />
         <property name="Spacing">6</property>
         <child>
-          <widget class="Gtk.Label" id="label1">
+          <widget class="Gtk.HBox" id="hbox3">
             <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">&lt;b&gt;&lt;big&gt;Add New Emulator&lt;/big&gt;&lt;/b&gt;</property>
-            <property name="UseMarkup">True</property>
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Image" id="image1">
+                <property name="MemberName" />
+                <property name="Pixbuf">resource:EMUlsifier.icons.1388104318_Streamline-15.png</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Alignment" id="alignment3">
+                <property name="MemberName" />
+                <child>
+                  <widget class="Gtk.VBox" id="vbox4">
+                    <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Label" id="label7">
+                        <property name="MemberName" />
+                        <property name="Xalign">0</property>
+                        <property name="Yalign">1</property>
+                        <property name="LabelProp" translatable="yes">&lt;b&gt;&lt;big&gt;Emulator&lt;/big&gt;&lt;/b&gt;</property>
+                        <property name="UseMarkup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="label8">
+                        <property name="MemberName" />
+                        <property name="Xalign">0</property>
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Create or update an emulator&lt;/span&gt;</property>
+                        <property name="UseMarkup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="Position">0</property>
@@ -277,7 +367,6 @@
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
                     <property name="ActivatesDefault">True</property>
-                    <property name="InvisibleChar">●</property>
                     <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
                     <signal name="Changed" handler="AddEmuEntryOnChange" />
                   </widget>
@@ -358,7 +447,6 @@
                         <property name="MemberName">EmulatorPathEntry</property>
                         <property name="CanFocus">True</property>
                         <property name="IsEditable">False</property>
-                        <property name="InvisibleChar">●</property>
                         <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
                         <signal name="Changed" handler="AddEmuEntryOnChange" />
                       </widget>
@@ -405,6 +493,69 @@
           </packing>
         </child>
         <child>
+          <widget class="Gtk.Frame" id="frame3">
+            <property name="MemberName" />
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment2">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="Gtk.VBox" id="vbox3">
+                    <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Entry" id="EmulatorLaunchArgsEntry">
+                        <property name="MemberName">EmulatorLaunchArgsEntry</property>
+                        <property name="CanFocus">True</property>
+                        <property name="IsEditable">True</property>
+                        <signal name="Changed" handler="AddEmuEntryOnChange" />
+                        <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.Label" id="label2">
+                        <property name="MemberName" />
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Use %ROM% in place of the game filename&lt;/span&gt;</property>
+                        <property name="UseMarkup">True</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel5">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Launch Arguments:</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">5</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
           <widget class="Gtk.Frame" id="frame5">
             <property name="MemberName" />
             <property name="ShadowType">None</property>
@@ -423,7 +574,6 @@
                         <property name="MemberName">RomPathEntry</property>
                         <property name="CanFocus">True</property>
                         <property name="IsEditable">False</property>
-                        <property name="InvisibleChar">●</property>
                         <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
                         <signal name="Changed" handler="AddEmuEntryOnChange" />
                       </widget>
@@ -463,35 +613,31 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">5</property>
+            <property name="Position">6</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Frame" id="frame3">
+          <widget class="Gtk.Frame" id="frame6">
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment2">
+              <widget class="Gtk.Alignment" id="GtkAlignment7">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
                 <property name="LeftPadding">12</property>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox3">
+                  <widget class="Gtk.VBox" id="vbox1">
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
-                      <widget class="Gtk.Entry" id="EmulatorLaunchArgsEntry">
-                        <property name="MemberName">EmulatorLaunchArgsEntry</property>
+                      <widget class="Gtk.Entry" id="RomMaskEntry">
+                        <property name="MemberName">RomMaskEntry</property>
                         <property name="CanFocus">True</property>
-                        <property name="Text" translatable="yes">%ROM%</property>
                         <property name="IsEditable">True</property>
-                        <property name="InvisibleChar">●</property>
-                        <signal name="Changed" handler="AddEmuEntryOnChange" />
-                        <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -501,9 +647,9 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="label2">
+                      <widget class="Gtk.Label" id="label3">
                         <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Use %ROM% in place of the game filename&lt;/span&gt;</property>
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Separate with space (.zip .iso etc.). Leave blank for all files.&lt;/span&gt;</property>
                         <property name="UseMarkup">True</property>
                       </widget>
                       <packing>
@@ -518,9 +664,9 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel3">
+              <widget class="Gtk.Label" id="GtkLabel9">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Launch Arguments:</property>
+                <property name="LabelProp" translatable="yes">Rom Mask:</property>
               </widget>
               <packing>
                 <property name="type">label_item</property>
@@ -528,7 +674,7 @@
             </child>
           </widget>
           <packing>
-            <property name="Position">6</property>
+            <property name="Position">7</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
@@ -545,9 +691,9 @@
                 <property name="CanFocus">True</property>
                 <property name="UseStock">True</property>
                 <property name="Type">StockItem</property>
-                <property name="StockId">gtk-add</property>
+                <property name="StockId">gtk-save</property>
                 <signal name="Clicked" handler="AddEmulatorButtonOnClick" />
-                <property name="label">gtk-add</property>
+                <property name="label">gtk-save</property>
               </widget>
               <packing>
                 <property name="Expand">False</property>
@@ -573,7 +719,7 @@
           </widget>
           <packing>
             <property name="PackType">End</property>
-            <property name="Position">7</property>
+            <property name="Position">8</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>

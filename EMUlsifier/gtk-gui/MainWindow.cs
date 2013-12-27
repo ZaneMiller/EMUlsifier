@@ -13,6 +13,8 @@ public partial class MainWindow
 	private global::Gtk.Action addAction1;
 	private global::Gtk.Action emuRemoveAction;
 	private global::Gtk.Action emuEditAction;
+	private global::Gtk.Action EditGameAction;
+	private global::Gtk.Action ScrapeGameAction;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HPaned hpaned6;
@@ -24,6 +26,7 @@ public partial class MainWindow
 	private global::Gtk.HPaned hpaned7;
 	private global::Gtk.VBox vbox5;
 	private global::Gtk.Label label2;
+	private global::Gtk.Toolbar GamesToolbar;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 	private global::Gtk.TreeView GameTreeView;
 	private global::Gtk.VBox vbox3;
@@ -57,6 +60,12 @@ public partial class MainWindow
 		this.emuEditAction = new global::Gtk.Action ("emuEditAction", null, global::Mono.Unix.Catalog.GetString ("Edit Emulator"), "gtk-edit");
 		this.emuEditAction.Sensitive = false;
 		w1.Add (this.emuEditAction, null);
+		this.EditGameAction = new global::Gtk.Action ("EditGameAction", null, global::Mono.Unix.Catalog.GetString ("Edit Game"), "gtk-edit");
+		this.EditGameAction.Sensitive = false;
+		w1.Add (this.EditGameAction, null);
+		this.ScrapeGameAction = new global::Gtk.Action ("ScrapeGameAction", null, global::Mono.Unix.Catalog.GetString ("Scrape Game Information"), "gtk-refresh");
+		this.ScrapeGameAction.Sensitive = false;
+		w1.Add (this.ScrapeGameAction, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -148,6 +157,18 @@ public partial class MainWindow
 		w8.Expand = false;
 		w8.Fill = false;
 		// Container child vbox5.Gtk.Box+BoxChild
+		this.UIManager.AddUiFromString ("<ui><toolbar name=\'GamesToolbar\'><toolitem name=\'EditGameAction\' action=\'EditGame" +
+		"Action\'/><toolitem name=\'ScrapeGameAction\' action=\'ScrapeGameAction\'/></toolbar>" +
+		"</ui>");
+		this.GamesToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/GamesToolbar")));
+		this.GamesToolbar.Name = "GamesToolbar";
+		this.GamesToolbar.ShowArrow = false;
+		this.vbox5.Add (this.GamesToolbar);
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GamesToolbar]));
+		w9.Position = 1;
+		w9.Expand = false;
+		w9.Fill = false;
+		// Container child vbox5.Gtk.Box+BoxChild
 		this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
 		this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
 		this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
@@ -159,11 +180,11 @@ public partial class MainWindow
 		this.GameTreeView.HeadersVisible = false;
 		this.GtkScrolledWindow1.Add (this.GameTreeView);
 		this.vbox5.Add (this.GtkScrolledWindow1);
-		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow1]));
-		w10.Position = 1;
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow1]));
+		w11.Position = 2;
 		this.hpaned7.Add (this.vbox5);
-		global::Gtk.Paned.PanedChild w11 = ((global::Gtk.Paned.PanedChild)(this.hpaned7 [this.vbox5]));
-		w11.Resize = false;
+		global::Gtk.Paned.PanedChild w12 = ((global::Gtk.Paned.PanedChild)(this.hpaned7 [this.vbox5]));
+		w12.Resize = false;
 		// Container child hpaned7.Gtk.Paned+PanedChild
 		this.vbox3 = new global::Gtk.VBox ();
 		this.vbox3.Name = "vbox3";
@@ -171,8 +192,8 @@ public partial class MainWindow
 		this.hpaned7.Add (this.vbox3);
 		this.hpaned6.Add (this.hpaned7);
 		this.vbox1.Add (this.hpaned6);
-		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
-		w14.Position = 1;
+		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
+		w15.Position = 1;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -183,6 +204,8 @@ public partial class MainWindow
 		this.addAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
 		this.emuRemoveAction.Activated += new global::System.EventHandler (this.RemoveEmulatorButtonOnActivate);
 		this.emuEditAction.Activated += new global::System.EventHandler (this.EditEmulatorButtonOnActivate);
+		this.ScrapeGameAction.Activated += new global::System.EventHandler (this.ScrapeGameOnActivate);
 		this.EmulatorTreeView.CursorChanged += new global::System.EventHandler (this.EmulatorOnCursorChange);
+		this.GameTreeView.CursorChanged += new global::System.EventHandler (this.GamesTreeOnCursorChange);
 	}
 }

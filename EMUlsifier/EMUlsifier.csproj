@@ -54,10 +54,21 @@
     <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
     <Reference Include="System.Xml.Serialization" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="icons\1388104318_Streamline-15.png">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -70,8 +81,10 @@
     <Compile Include="Controllers\EmulatorController.cs" />
     <Compile Include="Models\Emulator.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="AddEmulatorWindow.cs" />
-    <Compile Include="gtk-gui\EMUlsifier.AddEmulatorWindow.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.EmulatorWindow.cs" />
+    <Compile Include="EmulatorWindow.cs" />
+    <Compile Include="Controllers\ScraperController.cs" />
+    <Compile Include="Models\Scraper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -80,10 +93,12 @@
     <Folder Include="Controllers\" />
     <Folder Include="artwork\" />
     <Folder Include="scrapers\" />
+    <Folder Include="icons\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="artwork\FanartResidentEvil4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="scrapers\GamesDB.py" />
   </ItemGroup>
 </Project>

@@ -7,7 +7,8 @@ using EMUlsifier;
 public partial class MainWindow: Gtk.Window
 {	
 
-	private Emulator activeModel;
+	private Emulator activeEmulator;
+	private Game activeGame;
 
 	public MainWindow (): base (Gtk.WindowType.Toplevel)
 	{
@@ -98,8 +99,9 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="games">Games.</param>
 	protected void UpdateGameTree()
 	{
+		activeEmulator.UpdateGamesList ();
 		ListStore gameListStore = new ListStore (typeof(Game));
-		foreach(Game game in activeModel.games.OrderBy (o => o.title))
+		foreach(Game game in activeEmulator.games.OrderBy (o => o.title))
 			gameListStore.AppendValues (game);
 		GameTreeView.Model = gameListStore;
 	}
@@ -141,7 +143,7 @@ public partial class MainWindow: Gtk.Window
 		TreeIter iter;
 		if ((sender as TreeView).Selection.GetSelected (out model, out iter))
 		{
-			activeModel = (Emulator)model.GetValue (iter, 0);
+			activeEmulator = (Emulator)model.GetValue (iter, 0);
 			UpdateGameTree ();
 			emuEditAction.Sensitive = true;
 			emuRemoveAction.Sensitive = true;
@@ -156,9 +158,24 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">E.</param>
 	protected void AddEmulatorOnActivate (object sender, EventArgs e)
 	{
-		AddEmulatorWindow emuWin = new AddEmulatorWindow();
+		new EmulatorWindow(new Emulator());
 	}
 
+	/// <summary>
+	/// Opens the dialog to edit the information for a given emulator
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
+	protected void EditEmulatorButtonOnActivate (object sender, EventArgs e)
+	{
+		new EmulatorWindow (activeEmulator);
+	}
+
+	/// <summary>
+	/// Removes the emulator from the list, after warning the user about the implications of doing so.
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
 	protected void RemoveEmulatorButtonOnActivate (object sender, EventArgs e)
 	{
 		MessageDialog md = new MessageDialog(this,
@@ -166,22 +183,39 @@ public partial class MainWindow: Gtk.Window
 			MessageType.Warning,
 			ButtonsType.YesNo,
 			true,
-			string.Format("<b>Warning!</b> Removing <i>{0}</i> will also remove all games and information associated with this emulator. Are you sure you want to continue?", activeModel.name)
+			string.Format("<b>Warning!</b> Removing <i>{0}</i> will also remove all games and information associated with this emulator. Are you sure you want to continue?", activeEmulator.name)
 		);
 		if ((ResponseType)md.Run () == ResponseType.Yes)
 		{
-			EmulatorController.emulators.Remove (activeModel);
+			EmulatorController.emulators.Remove (activeEmulator);
 			UpdateEmulatorTree ();
-			activeModel = null;
+			activeEmulator = null;
 		}
 		md.Destroy ();
 	}
 
-	protected void EditEmulatorButtonOnActivate (object sender, EventArgs e)
+
+	protected void ScrapeGameOnActivate (object sender, EventArgs e)
 	{
-		throw new NotImplementedException ();
+		Dictionary<string, string> result = ScraperController.Search (activeGame.title, activeEmulator.system);
+
+	}
+
+	protected void GamesTreeOnCursorChange (object sender, EventArgs e)
+	{
+		TreeModel model;
+		TreeIter iter;
+		if ((sender as TreeView).Selection.GetSelected (out model, out iter))
+		{
+			activeGame = (Game)model.GetValue (iter, 0);
+			UpdateGameTree ();
+			//TODO: EditGameAction.Sensitive = true;
+			ScrapeGameAction.Sensitive = true;
+		}
 	}
 }
+
+
 
 
 

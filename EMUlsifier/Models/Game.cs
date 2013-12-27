@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
 
 namespace EMUlsifier
 {
 	public class Game
 	{
-
 		public string title;
-		public string genre;
+		public string filePath;
+		public List<string> genres = new List<string>();
 		public DateTime releaseDate;
 		public string description;
 		public string rating;
