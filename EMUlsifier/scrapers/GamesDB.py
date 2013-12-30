@@ -1,7 +1,9 @@
 import urllib as ul
 import urllib2 as ul2
-import xml.etree.ElementTree as et
+import elementtree.ElementTree as et
+import elementtree.SimpleXMLTreeBuilder as sxtb
 import re
+et.XMLTreeBuilder = sxtb.TreeBuilder
 
 class Scraper():
     def __init__(self):
@@ -36,7 +38,7 @@ class Scraper():
     def _parsePlatforms(self, data):
         platforms = {}
         root = et.fromstring(data)
-        for plat in root.iter("Platform"):
+        for plat in root.getiterator("Platform"):
             alias = plat.find("alias")
             if alias is not None:
                 alias = alias.text.lower()
@@ -58,7 +60,7 @@ class Scraper():
     def _parseSearch(self, data):
         results = {}
         root = et.fromstring(data)
-        for game in root.iter("Game"):
+        for game in root.getiterator("Game"):
             title = game.find("GameTitle").text
             year = game.find("ReleaseDate")
             if year is not None:
@@ -79,11 +81,13 @@ class Scraper():
         game = {"title" : None, "genres" : [], "releaseDate" : None, "description" : None, "rating" : None, "publisher" : None, "developer" : None, "communityRating" : None}
         root = et.fromstring(data)
         root = root.find("Game")
+        if root is None:
+            return None
         #Title
         if root.find("GameTitle") is not None:
             game["title"] = root.find("GameTitle").text
         #Genres
-        for genre in root.iter("genre"):
+        for genre in root.getiterator("genre"):
             game["genres"].append(genre.text)
         #Release Date
         if root.find("ReleaseDate") is not None:

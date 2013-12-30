@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Gtk;
 using System.Collections.Generic;
 using System.Linq;
@@ -158,7 +159,14 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">E.</param>
 	protected void AddEmulatorOnActivate (object sender, EventArgs e)
 	{
-		new EmulatorWindow(new Emulator());
+		EmulatorDialog ed = new EmulatorDialog (new Emulator ());
+		if ((ResponseType)ed.Run () == ResponseType.Ok)
+		{
+			ed.UpdateEmulator ();
+			EmulatorController.emulators.Add (ed.emulator);
+			UpdateEmulatorTree ();
+		}
+		ed.Destroy ();
 	}
 
 	/// <summary>
@@ -168,7 +176,10 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">E.</param>
 	protected void EditEmulatorButtonOnActivate (object sender, EventArgs e)
 	{
-		new EmulatorWindow (activeEmulator);
+		EmulatorDialog ed = new EmulatorDialog (activeEmulator);
+		if ((ResponseType)ed.Run () == ResponseType.Ok)
+			ed.UpdateEmulator ();
+		ed.Destroy ();
 	}
 
 	/// <summary>
@@ -197,8 +208,37 @@ public partial class MainWindow: Gtk.Window
 
 	protected void ScrapeGameOnActivate (object sender, EventArgs e)
 	{
-		Dictionary<string, string> result = ScraperController.Search (activeGame.title, activeEmulator.system);
+		IndeterminateProgressDialog ipd = new IndeterminateProgressDialog ("Fetching Games", "Fetching search results for game...");
 
+		//Start the search thread
+		new Thread (new ThreadStart (delegate {
+			//Search
+			List<Tuple<string, string>> result = ScraperController.Search (activeGame.title, activeEmulator.system);
+			//After search close the dialog and run the after search method
+			Application.Invoke (delegate {
+				ipd.Destroy();
+				AfterGameSearch(result);
+			});
+		})).Start();
+
+		//Open the progress dialog, appears out of order, but isn't because of the above thread
+		ipd.Run ();
+	}
+
+	protected void AfterGameSearch(List<Tuple<string, string>> result)
+	{
+		if (result.Count == 0) {
+			//TODO: Enter Name
+		}
+		else
+		{
+			GameSearchResultDialog gsrd = new GameSearchResultDialog (result);
+			if ((ResponseType)gsrd.Run () == ResponseType.Ok)
+			{
+
+			}
+			gsrd.Destroy ();
+		}
 	}
 
 	protected void GamesTreeOnCursorChange (object sender, EventArgs e)

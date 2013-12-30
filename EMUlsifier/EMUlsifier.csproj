@@ -70,10 +70,10 @@
     <EmbeddedResource Include="icons\1388104318_Streamline-15.png">
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
+    <EmbeddedResource Include="icons\1388384270_search.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="MainWindow.cs" />
     <Compile Include="gtk-gui\MainWindow.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -81,10 +81,15 @@
     <Compile Include="Controllers\EmulatorController.cs" />
     <Compile Include="Models\Emulator.cs" />
     <Compile Include="Models\Game.cs" />
-    <Compile Include="gtk-gui\EMUlsifier.EmulatorWindow.cs" />
-    <Compile Include="EmulatorWindow.cs" />
     <Compile Include="Controllers\ScraperController.cs" />
     <Compile Include="Models\Scraper.cs" />
+    <Compile Include="Views\MainWindow.cs" />
+    <Compile Include="Views\EmulatorDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.EmulatorDialog.cs" />
+    <Compile Include="Views\Scraping\GameSearchResultDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.GameSearchResultDialog.cs" />
+    <Compile Include="Views\IndeterminateProgressDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.IndeterminateProgressDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -94,11 +99,49 @@
     <Folder Include="artwork\" />
     <Folder Include="scrapers\" />
     <Folder Include="icons\" />
+    <Folder Include="scrapers\libs\" />
+    <Folder Include="Views\" />
+    <Folder Include="Views\Scraping\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="artwork\FanartResidentEvil4.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="scrapers\GamesDB.py" />
+    <None Include="scrapers\GamesDB.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\ElementInclude.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\ElementPath.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\ElementTree.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\HTMLTreeBuilder.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\SgmlopXMLTreeBuilder.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\SimpleXMLTreeBuilder.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\SimpleXMLWriter.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\TidyHTMLTreeBuilder.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\TidyTools.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\XMLTreeBuilder.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="scrapers\libs\elementtree\__init__.py">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

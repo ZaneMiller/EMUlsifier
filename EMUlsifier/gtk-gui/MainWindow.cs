@@ -163,6 +163,7 @@ public partial class MainWindow
 		this.GamesToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/GamesToolbar")));
 		this.GamesToolbar.Name = "GamesToolbar";
 		this.GamesToolbar.ShowArrow = false;
+		this.GamesToolbar.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
 		this.vbox5.Add (this.GamesToolbar);
 		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GamesToolbar]));
 		w9.Position = 1;

@@ -65,7 +65,7 @@ namespace EMUlsifier
 		{
 			Game game = new Game ()
 			{
-				title = file.Name,
+				title = file.Name.Replace(file.Extension, ""), //Pull the extention off the file
 				filePath = file.FullName
 			};
 			games.Add (game);
@@ -82,6 +82,8 @@ namespace EMUlsifier
 				if (romMasks.Count == 0 || romMasks.Contains (file.Extension))
 				if (!CheckFile (file))
 						CreateGame (file);
+				//TODO: If file is in library and no longer exists
+				//TODOL File in library but extention is no longer valid
 			}
 		}
 

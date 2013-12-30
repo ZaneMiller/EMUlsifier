@@ -196,6 +196,7 @@
                       <widget class="Gtk.Toolbar" id="GamesToolbar">
                         <property name="MemberName">GamesToolbar</property>
                         <property name="ShowArrow">False</property>
+                        <property name="ButtonStyle">Icons</property>
                         <node name="GamesToolbar" type="Toolbar">
                           <node type="Toolitem" action="EditGameAction" />
                           <node type="Toolitem" action="ScrapeGameAction" />
@@ -259,18 +260,80 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="EMUlsifier.EmulatorWindow" design-size="584 529">
+  <widget class="Gtk.Dialog" id="EMUlsifier.Dialog" design-size="400 300">
     <property name="MemberName" />
-    <property name="Title" translatable="yes">EMUlsifier - Add/Update Emulator</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
+        <property name="MemberName" />
+        <property name="BorderWidth">2</property>
+        <child>
+          <placeholder />
+        </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
+        <child>
+          <widget class="Gtk.Button" id="buttonCancel">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Dialog" id="EMUlsifier.EmulatorDialog" design-size="568 501">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Add/Update Emulator</property>
+    <property name="TypeHint">Dialog</property>
     <property name="WindowPosition">CenterOnParent</property>
     <property name="Modal">True</property>
-    <property name="BorderWidth">8</property>
-    <child>
-      <widget class="Gtk.VBox" id="vbox2">
+    <property name="BorderWidth">10</property>
+    <property name="Resizable">False</property>
+    <property name="AllowGrow">False</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
         <property name="MemberName" />
-        <property name="Spacing">6</property>
+        <property name="BorderWidth">2</property>
         <child>
-          <widget class="Gtk.HBox" id="hbox3">
+          <widget class="Gtk.HBox" id="hbox1">
             <property name="MemberName" />
             <property name="Spacing">6</property>
             <child>
@@ -286,17 +349,17 @@
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Alignment" id="alignment3">
+              <widget class="Gtk.Alignment" id="alignment1">
                 <property name="MemberName" />
+                <property name="Xalign">0</property>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox4">
+                  <widget class="Gtk.VBox" id="vbox2">
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
-                      <widget class="Gtk.Label" id="label7">
+                      <widget class="Gtk.Label" id="label1">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
-                        <property name="Yalign">1</property>
                         <property name="LabelProp" translatable="yes">&lt;b&gt;&lt;big&gt;Emulator&lt;/big&gt;&lt;/b&gt;</property>
                         <property name="UseMarkup">True</property>
                       </widget>
@@ -308,10 +371,10 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="label8">
+                      <widget class="Gtk.Label" id="label2">
                         <property name="MemberName" />
                         <property name="Xalign">0</property>
-                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Create or update an emulator&lt;/span&gt;</property>
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Add/Update an emulator&lt;/span&gt;</property>
                         <property name="UseMarkup">True</property>
                       </widget>
                       <packing>
@@ -337,7 +400,6 @@
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
-            <property name="Padding">4</property>
           </packing>
         </child>
         <child>
@@ -349,6 +411,7 @@
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
+            <property name="Padding">6</property>
           </packing>
         </child>
         <child>
@@ -356,7 +419,7 @@
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment">
+              <widget class="Gtk.Alignment" id="GtkAlignment2">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
@@ -366,18 +429,17 @@
                     <property name="MemberName">EmulatorNameEntry</property>
                     <property name="CanFocus">True</property>
                     <property name="IsEditable">True</property>
-                    <property name="ActivatesDefault">True</property>
-                    <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
-                    <signal name="Changed" handler="AddEmuEntryOnChange" />
+                    <property name="InvisibleChar">●</property>
+                    <signal name="Changed" handler="EmuEntryOnChange" />
+                    <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
                   </widget>
                 </child>
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel">
+              <widget class="Gtk.Label" id="GtkLabel2">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Emulator Name:</property>
-                <property name="UseMarkup">True</property>
+                <property name="LabelProp" translatable="yes">Name:</property>
               </widget>
               <packing>
                 <property name="type">label_item</property>
@@ -392,11 +454,11 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Frame" id="frame4">
+          <widget class="Gtk.Frame" id="frame6">
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment3">
+              <widget class="Gtk.Alignment" id="GtkAlignment9">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
@@ -406,15 +468,15 @@
                     <property name="MemberName">SystemTypeCombo</property>
                     <property name="IsTextCombo">True</property>
                     <property name="Items" translatable="yes" />
-                    <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
+                    <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
                   </widget>
                 </child>
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel4">
+              <widget class="Gtk.Label" id="GtkLabel9">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">System:</property>
+                <property name="LabelProp" translatable="yes">System Type:</property>
               </widget>
               <packing>
                 <property name="type">label_item</property>
@@ -433,22 +495,24 @@
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment1">
+              <widget class="Gtk.Alignment" id="GtkAlignment3">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
                 <property name="LeftPadding">12</property>
                 <child>
-                  <widget class="Gtk.HBox" id="hbox1">
+                  <widget class="Gtk.HBox" id="hbox2">
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
                       <widget class="Gtk.Entry" id="EmulatorPathEntry">
                         <property name="MemberName">EmulatorPathEntry</property>
+                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
-                        <property name="IsEditable">False</property>
-                        <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
-                        <signal name="Changed" handler="AddEmuEntryOnChange" />
+                        <property name="IsEditable">True</property>
+                        <property name="InvisibleChar">●</property>
+                        <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
+                        <signal name="Changed" handler="EmuEntryOnChange" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -456,11 +520,12 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Button" id="EmulatorPathBrowse">
-                        <property name="MemberName">EmulatorPathBrowse</property>
+                      <widget class="Gtk.Button" id="button110">
+                        <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Browse...</property>
+                        <property name="Type">TextAndIcon</property>
+                        <property name="Icon">stock:gtk-open Menu</property>
+                        <property name="Label" translatable="yes">_Browse...</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="EmulatorPathOnClick" />
                       </widget>
@@ -476,7 +541,7 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel2">
+              <widget class="Gtk.Label" id="GtkLabel3">
                 <property name="MemberName" />
                 <property name="LabelProp" translatable="yes">Executable Path:</property>
               </widget>
@@ -497,7 +562,7 @@
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment2">
+              <widget class="Gtk.Alignment" id="GtkAlignment5">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
@@ -511,8 +576,9 @@
                         <property name="MemberName">EmulatorLaunchArgsEntry</property>
                         <property name="CanFocus">True</property>
                         <property name="IsEditable">True</property>
-                        <signal name="Changed" handler="AddEmuEntryOnChange" />
-                        <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
+                        <property name="InvisibleChar">●</property>
+                        <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
+                        <signal name="Changed" handler="EmuEntryOnChange" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -522,9 +588,9 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="label2">
+                      <widget class="Gtk.Label" id="label3">
                         <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Use %ROM% in place of the game filename&lt;/span&gt;</property>
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Use %ROM% in place of rom file path&lt;/span&gt;</property>
                         <property name="UseMarkup">True</property>
                       </widget>
                       <packing>
@@ -556,7 +622,7 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Frame" id="frame5">
+          <widget class="Gtk.Frame" id="frame4">
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
@@ -566,16 +632,18 @@
                 <property name="Yalign">0</property>
                 <property name="LeftPadding">12</property>
                 <child>
-                  <widget class="Gtk.HBox" id="hbox2">
+                  <widget class="Gtk.HBox" id="hbox3">
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
                       <widget class="Gtk.Entry" id="RomPathEntry">
                         <property name="MemberName">RomPathEntry</property>
+                        <property name="Sensitive">False</property>
                         <property name="CanFocus">True</property>
-                        <property name="IsEditable">False</property>
-                        <signal name="FocusOutEvent" handler="AddEmuEntryOnBlur" />
-                        <signal name="Changed" handler="AddEmuEntryOnChange" />
+                        <property name="IsEditable">True</property>
+                        <property name="InvisibleChar">●</property>
+                        <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
+                        <signal name="Changed" handler="EmuEntryOnChange" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -583,11 +651,12 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Button" id="RomPathBrowseButton">
-                        <property name="MemberName">RomPathBrowseButton</property>
+                      <widget class="Gtk.Button" id="button119">
+                        <property name="MemberName" />
                         <property name="CanFocus">True</property>
-                        <property name="Type">TextOnly</property>
-                        <property name="Label" translatable="yes">Browse..._</property>
+                        <property name="Type">TextAndIcon</property>
+                        <property name="Icon">stock:gtk-open Menu</property>
+                        <property name="Label" translatable="yes">_Browse...</property>
                         <property name="UseUnderline">True</property>
                         <signal name="Clicked" handler="RomPathButtonOnClick" />
                       </widget>
@@ -603,9 +672,9 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel7">
+              <widget class="Gtk.Label" id="GtkLabel6">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Rom Folder:</property>
+                <property name="LabelProp" translatable="yes">Rom Folder Path:</property>
               </widget>
               <packing>
                 <property name="type">label_item</property>
@@ -620,17 +689,17 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Frame" id="frame6">
+          <widget class="Gtk.Frame" id="frame5">
             <property name="MemberName" />
             <property name="ShadowType">None</property>
             <child>
-              <widget class="Gtk.Alignment" id="GtkAlignment7">
+              <widget class="Gtk.Alignment" id="GtkAlignment8">
                 <property name="MemberName" />
                 <property name="Xalign">0</property>
                 <property name="Yalign">0</property>
                 <property name="LeftPadding">12</property>
                 <child>
-                  <widget class="Gtk.VBox" id="vbox1">
+                  <widget class="Gtk.VBox" id="vbox4">
                     <property name="MemberName" />
                     <property name="Spacing">6</property>
                     <child>
@@ -638,6 +707,9 @@
                         <property name="MemberName">RomMaskEntry</property>
                         <property name="CanFocus">True</property>
                         <property name="IsEditable">True</property>
+                        <property name="InvisibleChar">●</property>
+                        <signal name="FocusOutEvent" handler="EmuEntryOnFocusOut" />
+                        <signal name="Changed" handler="EmuEntryOnChange" />
                       </widget>
                       <packing>
                         <property name="Position">0</property>
@@ -647,9 +719,9 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="Gtk.Label" id="label3">
+                      <widget class="Gtk.Label" id="label4">
                         <property name="MemberName" />
-                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Separate with space (.zip .iso etc.). Leave blank for all files.&lt;/span&gt;</property>
+                        <property name="LabelProp" translatable="yes">&lt;span foreground="grey"&gt;Space-separated list of file types (e.g. .zip .iso etc.). Leave blank to accept all files.&lt;/span&gt;</property>
                         <property name="UseMarkup">True</property>
                       </widget>
                       <packing>
@@ -664,9 +736,9 @@
               </widget>
             </child>
             <child>
-              <widget class="Gtk.Label" id="GtkLabel9">
+              <widget class="Gtk.Label" id="GtkLabel8">
                 <property name="MemberName" />
-                <property name="LabelProp" translatable="yes">Rom Mask:</property>
+                <property name="LabelProp" translatable="yes">Rom File Mask:</property>
               </widget>
               <packing>
                 <property name="type">label_item</property>
@@ -680,50 +752,314 @@
             <property name="Fill">False</property>
           </packing>
         </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
         <child>
-          <widget class="Gtk.HButtonBox" id="hbuttonbox2">
+          <widget class="Gtk.Button" id="AddEmulatorButton">
             <property name="MemberName" />
-            <property name="Size">2</property>
-            <property name="LayoutStyle">End</property>
+            <property name="Sensitive">False</property>
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Dialog" id="EMUlsifier.GameSearchResultDialog" design-size="400 301">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">EMUlsifier - Search Results</property>
+    <property name="TypeHint">Dialog</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Modal">True</property>
+    <property name="BorderWidth">6</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
+        <property name="MemberName" />
+        <property name="BorderWidth">2</property>
+        <child>
+          <widget class="Gtk.HBox" id="hbox4">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
             <child>
-              <widget class="Gtk.Button" id="AddEmulatorButton">
-                <property name="MemberName">AddEmulatorButton</property>
-                <property name="CanFocus">True</property>
-                <property name="UseStock">True</property>
-                <property name="Type">StockItem</property>
-                <property name="StockId">gtk-save</property>
-                <signal name="Clicked" handler="AddEmulatorButtonOnClick" />
-                <property name="label">gtk-save</property>
+              <widget class="Gtk.Image" id="image48">
+                <property name="MemberName" />
+                <property name="Pixbuf">resource:EMUlsifier.icons.1388384270_search.png</property>
               </widget>
               <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
             </child>
             <child>
-              <widget class="Gtk.Button" id="button3">
+              <widget class="Gtk.Label" id="label5">
                 <property name="MemberName" />
-                <property name="CanFocus">True</property>
-                <property name="UseStock">True</property>
-                <property name="Type">StockItem</property>
-                <property name="StockId">gtk-cancel</property>
-                <signal name="Clicked" handler="AddEmuCancelonClick" />
-                <property name="label">gtk-cancel</property>
+                <property name="LabelProp" translatable="yes">&lt;b&gt;&lt;big&gt;Search Results&lt;/big&gt;&lt;/b&gt;</property>
+                <property name="UseMarkup">True</property>
               </widget>
               <packing>
                 <property name="Position">1</property>
+                <property name="AutoSize">True</property>
                 <property name="Expand">False</property>
                 <property name="Fill">False</property>
               </packing>
             </child>
           </widget>
           <packing>
-            <property name="PackType">End</property>
-            <property name="Position">8</property>
+            <property name="Position">0</property>
             <property name="AutoSize">True</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
-            <property name="Padding">10</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HSeparator" id="hseparator2">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+            <property name="Padding">6</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Frame" id="frame9">
+            <property name="MemberName" />
+            <property name="ShadowType">None</property>
+            <child>
+              <widget class="Gtk.Alignment" id="GtkAlignment2">
+                <property name="MemberName" />
+                <property name="Xalign">0</property>
+                <property name="Yalign">0</property>
+                <property name="LeftPadding">12</property>
+                <child>
+                  <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+                    <property name="MemberName" />
+                    <property name="ShadowType">In</property>
+                    <child>
+                      <widget class="Gtk.TreeView" id="GameSearchResultTreeView">
+                        <property name="MemberName" />
+                        <property name="CanFocus">True</property>
+                        <property name="ShowScrollbars">True</property>
+                        <property name="EnableSearch">False</property>
+                        <property name="HeadersVisible">False</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="Gtk.Label" id="GtkLabel2">
+                <property name="MemberName" />
+                <property name="LabelProp" translatable="yes">Select A Game:</property>
+              </widget>
+              <packing>
+                <property name="type">label_item</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonCancel">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Dialog" id="EMUlsifier.IndeterminateProgressDialog" design-size="481 159">
+    <property name="MemberName" />
+    <property name="WindowPosition">CenterOnParent</property>
+    <property name="BorderWidth">6</property>
+    <property name="Buttons">2</property>
+    <property name="HelpButton">False</property>
+    <child internal-child="VBox">
+      <widget class="Gtk.VBox" id="dialog1_VBox">
+        <property name="MemberName" />
+        <property name="BorderWidth">2</property>
+        <child>
+          <widget class="Gtk.Alignment" id="alignment3">
+            <property name="MemberName" />
+            <child>
+              <widget class="Gtk.HBox" id="hbox6">
+                <property name="MemberName" />
+                <property name="Spacing">6</property>
+                <child>
+                  <widget class="Gtk.Image" id="IndeterminateProgressDialogIcon">
+                    <property name="MemberName" />
+                    <property name="Pixbuf">stock:gtk-dialog-info Dialog</property>
+                  </widget>
+                  <packing>
+                    <property name="Position">0</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.VBox" id="vbox5">
+                    <property name="MemberName" />
+                    <property name="Spacing">6</property>
+                    <child>
+                      <widget class="Gtk.Label" id="IndeterminateProgressMessage">
+                        <property name="MemberName">IndeterminateProgressMessage</property>
+                      </widget>
+                      <packing>
+                        <property name="Position">0</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="Gtk.ProgressBar" id="IndeterminateProgressDialogBar">
+                        <property name="MemberName" />
+                      </widget>
+                      <packing>
+                        <property name="Position">1</property>
+                        <property name="AutoSize">True</property>
+                        <property name="Expand">False</property>
+                        <property name="Fill">False</property>
+                      </packing>
+                    </child>
+                  </widget>
+                  <packing>
+                    <property name="Position">1</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                  </packing>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+    <child internal-child="ActionArea">
+      <widget class="Gtk.HButtonBox" id="dialog1_ActionArea">
+        <property name="MemberName" />
+        <property name="Spacing">10</property>
+        <property name="BorderWidth">5</property>
+        <property name="Size">2</property>
+        <property name="LayoutStyle">End</property>
+        <child>
+          <widget class="Gtk.Button" id="buttonCancel">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-cancel</property>
+            <property name="ResponseId">-6</property>
+            <property name="label">gtk-cancel</property>
+          </widget>
+          <packing>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Button" id="buttonOk">
+            <property name="MemberName" />
+            <property name="CanDefault">True</property>
+            <property name="CanFocus">True</property>
+            <property name="UseStock">True</property>
+            <property name="Type">StockItem</property>
+            <property name="StockId">gtk-ok</property>
+            <property name="ResponseId">-5</property>
+            <property name="label">gtk-ok</property>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
           </packing>
         </child>
       </widget>
