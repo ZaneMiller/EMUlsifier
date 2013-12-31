@@ -14,6 +14,9 @@ namespace EMUlsifier
 		public string publisher;
 		public string developer;
 		public float communityRating;
+		public string bannerArtPath;
+		public string boxArtPath;
+
 
 
 		public Game ()

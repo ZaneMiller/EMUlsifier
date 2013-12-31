@@ -78,8 +78,13 @@ class Scraper():
     
     """Parses the result from a request for data for a specific game"""
     def _parseInfo(self, data):
-        game = {"title" : None, "genres" : [], "releaseDate" : None, "description" : None, "rating" : None, "publisher" : None, "developer" : None, "communityRating" : None}
+        game = {"title" : None, "genres" : [], "releaseDate" : None, "description" : None, "rating" : None, "publisher" : None, "developer" : None, "communityRating" : None, "boxArt" : None, "bannerArt" : None}
         root = et.fromstring(data)
+        
+        baseUrl = ""
+        if root.find("baseImgUrl") is not None:
+            baseUrl = root.find("baseImgUrl").text
+            
         root = root.find("Game")
         if root is None:
             return None
@@ -104,9 +109,22 @@ class Scraper():
         #Developer
         if root.find("Developer") is not None:
             game["developer"] = root.find("Developer").text
+        #Box Art
+        for art in root.getiterator("boxart"):
+            if art.attrib["side"] == "front":
+                game["boxArt"] = baseUrl + art.text
+        #Banner Art
+        for art in root.getiterator("banner"):
+            game["bannerArt"] = baseUrl + art.text
+            break
         return game
     
     """Request info from the GamesDB for a specific game with a given ID"""
     def getInfo(self, gameId):
         return self._parseInfo(self._makeRequest("GetGame.php", {"id" : gameId}))
-    
+
+if __name__ == "__main__":
+    s = Scraper()
+    for key in s.search("Donkey Kong", "SNES"):
+        print s.getInfo(key)["bannerArt"]
+        break

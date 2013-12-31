@@ -6,7 +6,7 @@ namespace EMUlsifier
 {
 	public partial class IndeterminateProgressDialog : Gtk.Dialog
 	{
-		private const uint PULSE_RATE = 100;
+		private const uint PULSE_RATE = 75;
 
 		public IndeterminateProgressDialog (string title, string message, bool useMarkup = false, Pixbuf pixbuf = null) : base()
 		{

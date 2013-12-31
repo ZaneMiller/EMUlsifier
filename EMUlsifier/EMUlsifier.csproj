@@ -104,9 +104,6 @@
     <Folder Include="Views\Scraping\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="artwork\FanartResidentEvil4.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="scrapers\GamesDB.py">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Gtk;
+using Gdk;
 using System.Collections.Generic;
 using System.Linq;
 using EMUlsifier;
@@ -205,26 +206,41 @@ public partial class MainWindow: Gtk.Window
 		md.Destroy ();
 	}
 
-
+	/// <summary>
+	/// Called when the scrape game button is clicked in the game toolbar
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
 	protected void ScrapeGameOnActivate (object sender, EventArgs e)
 	{
 		IndeterminateProgressDialog ipd = new IndeterminateProgressDialog ("Fetching Games", "Fetching search results for game...");
 
 		//Start the search thread
-		new Thread (new ThreadStart (delegate {
+		Thread thr = new Thread (new ThreadStart (delegate {
 			//Search
 			List<Tuple<string, string>> result = ScraperController.Search (activeGame.title, activeEmulator.system);
 			//After search close the dialog and run the after search method
 			Application.Invoke (delegate {
-				ipd.Destroy();
-				AfterGameSearch(result);
+				ipd.Destroy ();
+				AfterGameSearch (result);
 			});
-		})).Start();
+		}));
+
+		thr.Start ();
 
 		//Open the progress dialog, appears out of order, but isn't because of the above thread
-		ipd.Run ();
+		//If the cancel button is pressed, stop the search thread and destory the dialog
+		if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive)
+		{
+			thr.Abort ();
+			ipd.Destroy ();
+		}
 	}
 
+	/// <summary>
+	/// Called after the search result is returned from 
+	/// </summary>
+	/// <param name="result">Result.</param>
 	protected void AfterGameSearch(List<Tuple<string, string>> result)
 	{
 		if (result.Count == 0) {
@@ -233,14 +249,45 @@ public partial class MainWindow: Gtk.Window
 		else
 		{
 			GameSearchResultDialog gsrd = new GameSearchResultDialog (result);
-			if ((ResponseType)gsrd.Run () == ResponseType.Ok)
-			{
-
-			}
+			ResponseType rsp = (ResponseType)gsrd.Run ();
 			gsrd.Destroy ();
+			if (rsp == ResponseType.Ok)
+				OnScraperGameSelect (gsrd.selected.Item1);
 		}
 	}
 
+
+	protected void OnScraperGameSelect(string searchId)
+	{
+		//Create progress dialog
+		IndeterminateProgressDialog ipd = new IndeterminateProgressDialog ("Fetching Game Information", "Fetching the details for the selected game");
+		//Start the data fetching thread
+		Thread thr = new Thread (new ThreadStart (delegate {
+			//Fetch the data
+			ScraperController.UpdateGame(activeGame, searchId);
+			Application.Invoke(delegate {
+				//Close the dialog in the main thread
+				ipd.Destroy();
+				UpdateGameView();
+			});
+		}));
+
+		thr.Start ();
+
+		//If cancled close the dialog and abort the thread
+		if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive)
+		{
+			thr.Abort ();
+			ipd.Destroy ();
+		}
+
+	}
+
+	/// <summary>
+	/// Called when the selection in the game treeview is changed
+	/// </summary>
+	/// <param name="sender">Sender.</param>
+	/// <param name="e">E.</param>
 	protected void GamesTreeOnCursorChange (object sender, EventArgs e)
 	{
 		TreeModel model;
@@ -251,7 +298,77 @@ public partial class MainWindow: Gtk.Window
 			UpdateGameTree ();
 			//TODO: EditGameAction.Sensitive = true;
 			ScrapeGameAction.Sensitive = true;
+			UpdateGameView ();
 		}
+	}
+
+	/// <summary>
+	/// Updates the game view.
+	/// </summary>
+	protected void UpdateGameView()
+	{
+		GameTitleLabel.Text = string.Format ("<b><big>{0}</big></b>", activeGame.title);
+		//TODO: Game art
+		//Description
+		if (!string.IsNullOrWhiteSpace(activeGame.description)) {
+			GameDescriptionLabel.Text = activeGame.description;
+			GameDescriptionLabel.Visible = true;
+		} else
+			GameDescriptionLabel.Visible = false;
+		//Genres
+		if (activeGame.genres.Count > 0) {
+			GameGeneresLabel.Text = "<b>Genres:</b>";
+			foreach (string g in activeGame.genres)
+				GameGeneresLabel.Text += string.Format (" {0}", g);
+			GameGeneresLabel.Visible = true;
+		} else
+			GameGeneresLabel.Visible = false;
+		//Release Date
+		if (activeGame.releaseDate != null) {
+			GameReleaseDateLabel.Text = string.Format("<b>Release Date:</b> {0}",activeGame.releaseDate.ToLongDateString ());
+			GameReleaseDateLabel.Visible = true;
+		} else
+			GameReleaseDateLabel.Visible = false;
+		//Rating
+		if (!string.IsNullOrWhiteSpace (activeGame.rating)) {
+			GameRatingLabel.Text = string.Format ("<b>Rating:</b> {0}", activeGame.rating);
+			GameRatingLabel.Visible = true;
+		} else
+			GameRatingLabel.Visible = false;
+		//Publisher
+		if (!string.IsNullOrWhiteSpace (activeGame.publisher)) {
+			GamePublisherLabel.Text = string.Format ("<b>Publisher:</b> {0}", activeGame.publisher);
+			GamePublisherLabel.Visible = true;
+		} else
+			GamePublisherLabel.Visible = false;
+		//Developer
+		if (!string.IsNullOrWhiteSpace (activeGame.developer)) {
+			GameDeveloperLabel.Text = string.Format ("<b>Developer:</b> {0}", activeGame.developer);
+			GameDeveloperLabel.Visible = true;
+		} else
+			GameDeveloperLabel.Visible = false;
+		//Community Rating
+		if (activeGame.communityRating > 0) {
+			GameCommunityRatingLabel.Text = string.Format ("<b>Community Rating:</b> {0}", activeGame.communityRating);
+			GameCommunityRatingLabel.Visible = true;
+		} else
+			GameCommunityRatingLabel.Visible = false;
+		//Box Art
+		if (!string.IsNullOrWhiteSpace (activeGame.boxArtPath)) {
+			Pixbuf pixbuf = new Pixbuf (activeGame.boxArtPath);
+			GameBoxArtImage.Pixbuf = pixbuf;
+			GameBoxArtImage.Visible = true;
+		} else
+			GameBoxArtImage.Visible = false;
+
+		//For some reason we have to reset this to true for all controlls
+		GameTitleLabel.UseMarkup = true;
+		GameGeneresLabel.UseMarkup = true;
+		GameReleaseDateLabel.UseMarkup = true;
+		GameRatingLabel.UseMarkup = true;
+		GamePublisherLabel.UseMarkup = true;
+		GameDeveloperLabel.UseMarkup = true;
+		GameCommunityRatingLabel.UseMarkup = true;
 	}
 }
 

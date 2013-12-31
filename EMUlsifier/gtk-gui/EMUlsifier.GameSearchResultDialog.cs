@@ -13,7 +13,7 @@ namespace EMUlsifier
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.TreeView GameSearchResultTreeView;
 		private global::Gtk.Label GtkLabel2;
-		private global::Gtk.Button buttonOk;
+		private global::Gtk.Button GameSearchResultOkButton;
 		private global::Gtk.Button buttonCancel;
 
 		protected virtual void Build ()
@@ -102,15 +102,16 @@ namespace EMUlsifier
 			w10.BorderWidth = ((uint)(5));
 			w10.LayoutStyle = ((global::Gtk.ButtonBoxStyle)(4));
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
-			this.buttonOk = new global::Gtk.Button ();
-			this.buttonOk.CanDefault = true;
-			this.buttonOk.CanFocus = true;
-			this.buttonOk.Name = "buttonOk";
-			this.buttonOk.UseStock = true;
-			this.buttonOk.UseUnderline = true;
-			this.buttonOk.Label = "gtk-ok";
-			this.AddActionWidget (this.buttonOk, -5);
-			global::Gtk.ButtonBox.ButtonBoxChild w11 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w10 [this.buttonOk]));
+			this.GameSearchResultOkButton = new global::Gtk.Button ();
+			this.GameSearchResultOkButton.Sensitive = false;
+			this.GameSearchResultOkButton.CanDefault = true;
+			this.GameSearchResultOkButton.CanFocus = true;
+			this.GameSearchResultOkButton.Name = "GameSearchResultOkButton";
+			this.GameSearchResultOkButton.UseStock = true;
+			this.GameSearchResultOkButton.UseUnderline = true;
+			this.GameSearchResultOkButton.Label = "gtk-ok";
+			this.AddActionWidget (this.GameSearchResultOkButton, -5);
+			global::Gtk.ButtonBox.ButtonBoxChild w11 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w10 [this.GameSearchResultOkButton]));
 			w11.Expand = false;
 			w11.Fill = false;
 			// Container child dialog1_ActionArea.Gtk.ButtonBox+ButtonBoxChild
@@ -132,6 +133,7 @@ namespace EMUlsifier
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 301;
 			this.Show ();
+			this.GameSearchResultTreeView.CursorChanged += new global::System.EventHandler (this.GameSearchResultOnCursorChange);
 		}
 	}
 }
