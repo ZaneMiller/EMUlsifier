@@ -62,6 +62,9 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="libstetic">
+      <HintPath>..\..\..\..\..\..\Program Files %28x86%29\Xamarin Studio\AddIns\MonoDevelop.GtkCore\libstetic.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -90,6 +93,8 @@
     <Compile Include="gtk-gui\EMUlsifier.GameSearchResultDialog.cs" />
     <Compile Include="Views\IndeterminateProgressDialog.cs" />
     <Compile Include="gtk-gui\EMUlsifier.IndeterminateProgressDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.GameViewWidget.cs" />
+    <Compile Include="Views\MainWindow\GameViewWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -102,6 +107,7 @@
     <Folder Include="scrapers\libs\" />
     <Folder Include="Views\" />
     <Folder Include="Views\Scraping\" />
+    <Folder Include="Views\MainWindow\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="scrapers\GamesDB.py">

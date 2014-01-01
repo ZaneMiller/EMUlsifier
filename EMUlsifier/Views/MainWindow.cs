@@ -67,45 +67,28 @@ public partial class MainWindow: Gtk.Window
 	protected void CreateTrees ()
 	{
 		//Create the column for the emulator list
-		TreeViewColumn emulatorColumn = new TreeViewColumn ();
-		CellRendererText emulatorCell = new CellRendererText ();
-		emulatorColumn.PackStart (emulatorCell, true);
-		emulatorColumn.SetCellDataFunc (emulatorCell, new TreeCellDataFunc (RenderEmulatorName));
-		EmulatorTreeView.AppendColumn (emulatorColumn);
+		TreeViewColumn column = new TreeViewColumn ();
+		CellRendererText cell = new CellRendererText ();
+		column.PackStart (cell, true);
+		column.SetCellDataFunc (cell, new TreeCellDataFunc (RenderName));
+		LibraryTreeView.AppendColumn (column);
 
-
-		//Create the column for the game list
-		TreeViewColumn gameColumn = new TreeViewColumn ();
-		CellRendererText gameCell = new CellRendererText ();
-		gameColumn.PackStart (gameCell, true);
-		gameColumn.SetCellDataFunc (gameCell, new TreeCellDataFunc (RenderGameName));
-		GameTreeView.AppendColumn (gameColumn);
-
-		UpdateEmulatorTree ();
+		UpdateTree ();
 	}
 
 	/// <summary>
 	/// Fills the values into the emulator browser tree
 	/// </summary>
-	public void UpdateEmulatorTree()
+	public void UpdateTree()
 	{
-		ListStore emulatorListStore = new ListStore (typeof(Emulator));
-		foreach(Emulator emu in EmulatorController.emulators.OrderBy(o=>o.name))
-			emulatorListStore.AppendValues (emu);
-		EmulatorTreeView.Model = emulatorListStore;
-	}
-
-	/// <summary>
-	/// Fills values into the game browser tree
-	/// </summary>
-	/// <param name="games">Games.</param>
-	protected void UpdateGameTree()
-	{
-		activeEmulator.UpdateGamesList ();
-		ListStore gameListStore = new ListStore (typeof(Game));
-		foreach(Game game in activeEmulator.games.OrderBy (o => o.title))
-			gameListStore.AppendValues (game);
-		GameTreeView.Model = gameListStore;
+		TreeStore listStore = new TreeStore (typeof(Emulator), typeof(Game));
+		foreach (Emulator emu in EmulatorController.emulators.OrderBy(o=>o.name))
+		{
+			TreeIter iter = listStore.AppendValues (emu);
+			foreach (Game game in emu.games)
+				listStore.AppendValues (iter, game);
+		}
+		LibraryTreeView.Model = listStore;
 	}
 
 	/// <summary>
@@ -115,10 +98,18 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="cell">Cell.</param>
 	/// <param name="model">Model.</param>
 	/// <param name="iter">Iter.</param>
-	private void RenderEmulatorName(TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter)
+	private void RenderName(TreeViewColumn column, CellRenderer cell, TreeModel model, TreeIter iter)
 	{
-		Emulator emu = (Emulator)model.GetValue (iter, 0);
-		(cell as CellRendererText).Text = emu.name;
+		Type type = model.GetValue (iter, 0).GetType ();
+		if (type == typeof(Emulator)) {
+			Emulator emu = (Emulator)model.GetValue (iter, 0);
+			(cell as CellRendererText).Text = emu.name;
+		}
+		else if (type == typeof(Game))
+		{
+			Game game = (Game)model.GetValue (iter, 0);
+			(cell as CellRendererText).Text = game.title;
+		}
 	}
 
 	/// <summary>
@@ -145,13 +136,43 @@ public partial class MainWindow: Gtk.Window
 		TreeIter iter;
 		if ((sender as TreeView).Selection.GetSelected (out model, out iter))
 		{
-			activeEmulator = (Emulator)model.GetValue (iter, 0);
-			UpdateGameTree ();
-			emuEditAction.Sensitive = true;
-			emuRemoveAction.Sensitive = true;
+			object selected = model.GetValue (iter, 0);
+			if (selected.GetType () == typeof(Emulator))
+				OnEmulatorSelected ((Emulator)selected);
+			else if (selected.GetType () == typeof(Game))
+				OnGameSelected ((Game)selected);
 		}
 	}
 
+	/// <summary>
+	/// Called when an emulator is selected in the libaray
+	/// </summary>
+	/// <param name="emu">Emu.</param>
+	protected void OnEmulatorSelected (Emulator emu)
+	{
+		activeEmulator = emu;
+		activeGame = null;
+		SetActionSensitivity ();
+	}
+
+	/// <summary>
+	/// Called when a game is selected in the libaray
+	/// </summary>
+	/// <param name="game">Game.</param>
+	protected void OnGameSelected(Game game)
+	{
+		activeEmulator = null;
+		activeGame = game;
+		GameView.Model = activeGame;
+		SetActionSensitivity ();
+	}
+
+	protected void SetActionSensitivity ()
+	{
+		editAction.Sensitive = (activeEmulator != null || activeGame != null);
+		removeAction.Sensitive = (activeEmulator != null && activeGame == null);
+		refreshAction.Sensitive = (activeEmulator == null && activeGame != null);
+	}
 
 	/// <summary>
 	/// Opens the add emulator dialog when the button is clicked
@@ -165,7 +186,7 @@ public partial class MainWindow: Gtk.Window
 		{
 			ed.UpdateEmulator ();
 			EmulatorController.emulators.Add (ed.emulator);
-			UpdateEmulatorTree ();
+			UpdateTree ();
 		}
 		ed.Destroy ();
 	}
@@ -200,7 +221,7 @@ public partial class MainWindow: Gtk.Window
 		if ((ResponseType)md.Run () == ResponseType.Yes)
 		{
 			EmulatorController.emulators.Remove (activeEmulator);
-			UpdateEmulatorTree ();
+			UpdateTree ();
 			activeEmulator = null;
 		}
 		md.Destroy ();
@@ -268,7 +289,7 @@ public partial class MainWindow: Gtk.Window
 			Application.Invoke(delegate {
 				//Close the dialog in the main thread
 				ipd.Destroy();
-				UpdateGameView();
+				GameView.Model = activeGame;
 			});
 		}));
 
@@ -281,94 +302,6 @@ public partial class MainWindow: Gtk.Window
 			ipd.Destroy ();
 		}
 
-	}
-
-	/// <summary>
-	/// Called when the selection in the game treeview is changed
-	/// </summary>
-	/// <param name="sender">Sender.</param>
-	/// <param name="e">E.</param>
-	protected void GamesTreeOnCursorChange (object sender, EventArgs e)
-	{
-		TreeModel model;
-		TreeIter iter;
-		if ((sender as TreeView).Selection.GetSelected (out model, out iter))
-		{
-			activeGame = (Game)model.GetValue (iter, 0);
-			UpdateGameTree ();
-			//TODO: EditGameAction.Sensitive = true;
-			ScrapeGameAction.Sensitive = true;
-			UpdateGameView ();
-		}
-	}
-
-	/// <summary>
-	/// Updates the game view.
-	/// </summary>
-	protected void UpdateGameView()
-	{
-		GameTitleLabel.Text = string.Format ("<b><big>{0}</big></b>", activeGame.title);
-		//TODO: Game art
-		//Description
-		if (!string.IsNullOrWhiteSpace(activeGame.description)) {
-			GameDescriptionLabel.Text = activeGame.description;
-			GameDescriptionLabel.Visible = true;
-		} else
-			GameDescriptionLabel.Visible = false;
-		//Genres
-		if (activeGame.genres.Count > 0) {
-			GameGeneresLabel.Text = "<b>Genres:</b>";
-			foreach (string g in activeGame.genres)
-				GameGeneresLabel.Text += string.Format (" {0}", g);
-			GameGeneresLabel.Visible = true;
-		} else
-			GameGeneresLabel.Visible = false;
-		//Release Date
-		if (activeGame.releaseDate != null) {
-			GameReleaseDateLabel.Text = string.Format("<b>Release Date:</b> {0}",activeGame.releaseDate.ToLongDateString ());
-			GameReleaseDateLabel.Visible = true;
-		} else
-			GameReleaseDateLabel.Visible = false;
-		//Rating
-		if (!string.IsNullOrWhiteSpace (activeGame.rating)) {
-			GameRatingLabel.Text = string.Format ("<b>Rating:</b> {0}", activeGame.rating);
-			GameRatingLabel.Visible = true;
-		} else
-			GameRatingLabel.Visible = false;
-		//Publisher
-		if (!string.IsNullOrWhiteSpace (activeGame.publisher)) {
-			GamePublisherLabel.Text = string.Format ("<b>Publisher:</b> {0}", activeGame.publisher);
-			GamePublisherLabel.Visible = true;
-		} else
-			GamePublisherLabel.Visible = false;
-		//Developer
-		if (!string.IsNullOrWhiteSpace (activeGame.developer)) {
-			GameDeveloperLabel.Text = string.Format ("<b>Developer:</b> {0}", activeGame.developer);
-			GameDeveloperLabel.Visible = true;
-		} else
-			GameDeveloperLabel.Visible = false;
-		//Community Rating
-		if (activeGame.communityRating > 0) {
-			GameCommunityRatingLabel.Text = string.Format ("<b>Community Rating:</b> {0}", activeGame.communityRating);
-			GameCommunityRatingLabel.Visible = true;
-		} else
-			GameCommunityRatingLabel.Visible = false;
-		//Box Art
-		if (!string.IsNullOrWhiteSpace (activeGame.boxArtPath)) {
-			Pixbuf pixbuf = new Pixbuf (activeGame.boxArtPath);
-			GameBoxArtImage.Pixbuf = pixbuf;
-			GameBoxArtImage.Visible = true;
-		} else
-			GameBoxArtImage.Visible = false;
-
-		//For some reason we have to reset this to true for all controlls
-		GameTitleLabel.UseMarkup = true;
-		GameGeneresLabel.UseMarkup = true;
-		GameReleaseDateLabel.UseMarkup = true;
-		GameRatingLabel.UseMarkup = true;
-		GamePublisherLabel.UseMarkup = true;
-		GameDeveloperLabel.UseMarkup = true;
-		GameCommunityRatingLabel.UseMarkup = true;
 	}
 }
 

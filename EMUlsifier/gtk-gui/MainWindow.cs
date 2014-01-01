@@ -11,10 +11,11 @@ public partial class MainWindow
 	private global::Gtk.Action newAction;
 	private global::Gtk.Action addAction;
 	private global::Gtk.Action addAction1;
-	private global::Gtk.Action emuRemoveAction;
-	private global::Gtk.Action emuEditAction;
+	private global::Gtk.Action removeAction;
+	private global::Gtk.Action editAction;
 	private global::Gtk.Action EditGameAction;
 	private global::Gtk.Action ScrapeGameAction;
+	private global::Gtk.Action refreshAction1;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HPaned hpaned6;
@@ -22,27 +23,8 @@ public partial class MainWindow
 	private global::Gtk.Label label1;
 	private global::Gtk.Toolbar EmulatorsToolbar;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
-	private global::Gtk.TreeView EmulatorTreeView;
-	private global::Gtk.HPaned hpaned7;
-	private global::Gtk.VBox vbox5;
-	private global::Gtk.Label label2;
-	private global::Gtk.Toolbar GamesToolbar;
-	private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-	private global::Gtk.TreeView GameTreeView;
-	private global::Gtk.ScrolledWindow GtkScrolledWindow2;
-	private global::Gtk.VBox vbox3;
-	private global::Gtk.Image GameBannerImage;
-	private global::Gtk.Label GameTitleLabel;
-	private global::Gtk.Image GameBoxArtImage;
-	private global::Gtk.Label GameDescriptionLabel;
-	private global::Gtk.Alignment alignment1;
-	private global::Gtk.VBox vbox6;
-	private global::Gtk.Label GameGeneresLabel;
-	private global::Gtk.Label GameReleaseDateLabel;
-	private global::Gtk.Label GameRatingLabel;
-	private global::Gtk.Label GameDeveloperLabel;
-	private global::Gtk.Label GamePublisherLabel;
-	private global::Gtk.Label GameCommunityRatingLabel;
+	private global::Gtk.TreeView LibraryTreeView;
+	private global::EMUlsifier.GameViewWidget GameView;
 
 	protected virtual void Build ()
 	{
@@ -67,18 +49,21 @@ public partial class MainWindow
 		w1.Add (this.addAction, null);
 		this.addAction1 = new global::Gtk.Action ("addAction1", null, null, "gtk-add");
 		w1.Add (this.addAction1, null);
-		this.emuRemoveAction = new global::Gtk.Action ("emuRemoveAction", null, global::Mono.Unix.Catalog.GetString ("Remove Emulator"), "gtk-remove");
-		this.emuRemoveAction.Sensitive = false;
-		w1.Add (this.emuRemoveAction, null);
-		this.emuEditAction = new global::Gtk.Action ("emuEditAction", null, global::Mono.Unix.Catalog.GetString ("Edit Emulator"), "gtk-edit");
-		this.emuEditAction.Sensitive = false;
-		w1.Add (this.emuEditAction, null);
+		this.removeAction = new global::Gtk.Action ("removeAction", null, global::Mono.Unix.Catalog.GetString ("Remove Emulator"), "gtk-remove");
+		this.removeAction.Sensitive = false;
+		w1.Add (this.removeAction, null);
+		this.editAction = new global::Gtk.Action ("editAction", null, global::Mono.Unix.Catalog.GetString ("Edit Emulator"), "gtk-edit");
+		this.editAction.Sensitive = false;
+		w1.Add (this.editAction, null);
 		this.EditGameAction = new global::Gtk.Action ("EditGameAction", null, global::Mono.Unix.Catalog.GetString ("Edit Game"), "gtk-edit");
 		this.EditGameAction.Sensitive = false;
 		w1.Add (this.EditGameAction, null);
 		this.ScrapeGameAction = new global::Gtk.Action ("ScrapeGameAction", null, global::Mono.Unix.Catalog.GetString ("Scrape Game Information"), "gtk-refresh");
 		this.ScrapeGameAction.Sensitive = false;
 		w1.Add (this.ScrapeGameAction, null);
+		this.refreshAction1 = new global::Gtk.Action ("refreshAction1", null, null, "gtk-refresh");
+		this.refreshAction1.Sensitive = false;
+		w1.Add (this.refreshAction1, null);
 		this.UIManager.InsertActionGroup (w1, 0);
 		this.AddAccelGroup (this.UIManager.AccelGroup);
 		this.Name = "MainWindow";
@@ -103,6 +88,7 @@ public partial class MainWindow
 		w2.Fill = false;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.hpaned6 = new global::Gtk.HPaned ();
+		this.hpaned6.WidthRequest = 250;
 		this.hpaned6.CanFocus = true;
 		this.hpaned6.Name = "hpaned6";
 		this.hpaned6.Position = 250;
@@ -121,9 +107,7 @@ public partial class MainWindow
 		w3.Expand = false;
 		w3.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><toolbar name=\'EmulatorsToolbar\'><toolitem name=\'addAction\' action=\'addAction" +
-		"\'/><toolitem name=\'emuRemoveAction\' action=\'emuRemoveAction\'/><toolitem name=\'em" +
-		"uEditAction\' action=\'emuEditAction\'/></toolbar></ui>");
+		this.UIManager.AddUiFromString (@"<ui><toolbar name='EmulatorsToolbar'><toolitem name='addAction' action='addAction'/><toolitem name='removeAction' action='removeAction'/><toolitem name='editAction' action='editAction'/><toolitem name='refreshAction1' action='refreshAction1'/></toolbar></ui>");
 		this.EmulatorsToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/EmulatorsToolbar")));
 		this.EmulatorsToolbar.Name = "EmulatorsToolbar";
 		this.EmulatorsToolbar.ShowArrow = false;
@@ -138,12 +122,12 @@ public partial class MainWindow
 		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
 		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
 		// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-		this.EmulatorTreeView = new global::Gtk.TreeView ();
-		this.EmulatorTreeView.CanFocus = true;
-		this.EmulatorTreeView.Name = "EmulatorTreeView";
-		this.EmulatorTreeView.EnableSearch = false;
-		this.EmulatorTreeView.HeadersVisible = false;
-		this.GtkScrolledWindow.Add (this.EmulatorTreeView);
+		this.LibraryTreeView = new global::Gtk.TreeView ();
+		this.LibraryTreeView.CanFocus = true;
+		this.LibraryTreeView.Name = "LibraryTreeView";
+		this.LibraryTreeView.EnableSearch = false;
+		this.LibraryTreeView.HeadersVisible = false;
+		this.GtkScrolledWindow.Add (this.LibraryTreeView);
 		this.vbox4.Add (this.GtkScrolledWindow);
 		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.GtkScrolledWindow]));
 		w6.Position = 2;
@@ -151,182 +135,15 @@ public partial class MainWindow
 		global::Gtk.Paned.PanedChild w7 = ((global::Gtk.Paned.PanedChild)(this.hpaned6 [this.vbox4]));
 		w7.Resize = false;
 		// Container child hpaned6.Gtk.Paned+PanedChild
-		this.hpaned7 = new global::Gtk.HPaned ();
-		this.hpaned7.CanFocus = true;
-		this.hpaned7.Name = "hpaned7";
-		this.hpaned7.Position = 300;
-		// Container child hpaned7.Gtk.Paned+PanedChild
-		this.vbox5 = new global::Gtk.VBox ();
-		this.vbox5.Name = "vbox5";
-		this.vbox5.Spacing = 6;
-		// Container child vbox5.Gtk.Box+BoxChild
-		this.label2 = new global::Gtk.Label ();
-		this.label2.Name = "label2";
-		this.label2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Games</b>");
-		this.label2.UseMarkup = true;
-		this.vbox5.Add (this.label2);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.label2]));
-		w8.Position = 0;
-		w8.Expand = false;
-		w8.Fill = false;
-		// Container child vbox5.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString ("<ui><toolbar name=\'GamesToolbar\'><toolitem name=\'EditGameAction\' action=\'EditGame" +
-		"Action\'/><toolitem name=\'ScrapeGameAction\' action=\'ScrapeGameAction\'/></toolbar>" +
-		"</ui>");
-		this.GamesToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/GamesToolbar")));
-		this.GamesToolbar.Name = "GamesToolbar";
-		this.GamesToolbar.ShowArrow = false;
-		this.GamesToolbar.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
-		this.vbox5.Add (this.GamesToolbar);
-		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GamesToolbar]));
-		w9.Position = 1;
-		w9.Expand = false;
-		w9.Fill = false;
-		// Container child vbox5.Gtk.Box+BoxChild
-		this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
-		this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-		this.GameTreeView = new global::Gtk.TreeView ();
-		this.GameTreeView.CanFocus = true;
-		this.GameTreeView.Name = "GameTreeView";
-		this.GameTreeView.EnableSearch = false;
-		this.GameTreeView.HeadersVisible = false;
-		this.GtkScrolledWindow1.Add (this.GameTreeView);
-		this.vbox5.Add (this.GtkScrolledWindow1);
-		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow1]));
-		w11.Position = 2;
-		this.hpaned7.Add (this.vbox5);
-		global::Gtk.Paned.PanedChild w12 = ((global::Gtk.Paned.PanedChild)(this.hpaned7 [this.vbox5]));
-		w12.Resize = false;
-		// Container child hpaned7.Gtk.Paned+PanedChild
-		this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow ();
-		this.GtkScrolledWindow2.Name = "GtkScrolledWindow2";
-		this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
-		// Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
-		global::Gtk.Viewport w13 = new global::Gtk.Viewport ();
-		w13.ShadowType = ((global::Gtk.ShadowType)(0));
-		// Container child GtkViewport.Gtk.Container+ContainerChild
-		this.vbox3 = new global::Gtk.VBox ();
-		this.vbox3.Name = "vbox3";
-		this.vbox3.Spacing = 6;
-		// Container child vbox3.Gtk.Box+BoxChild
-		this.GameBannerImage = new global::Gtk.Image ();
-		this.GameBannerImage.Name = "GameBannerImage";
-		this.vbox3.Add (this.GameBannerImage);
-		global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GameBannerImage]));
-		w14.Position = 0;
-		w14.Expand = false;
-		w14.Fill = false;
-		// Container child vbox3.Gtk.Box+BoxChild
-		this.GameTitleLabel = new global::Gtk.Label ();
-		this.GameTitleLabel.Name = "GameTitleLabel";
-		this.GameTitleLabel.UseMarkup = true;
-		this.GameTitleLabel.Wrap = true;
-		this.vbox3.Add (this.GameTitleLabel);
-		global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GameTitleLabel]));
-		w15.Position = 1;
-		w15.Expand = false;
-		w15.Fill = false;
-		// Container child vbox3.Gtk.Box+BoxChild
-		this.GameBoxArtImage = new global::Gtk.Image ();
-		this.GameBoxArtImage.Name = "GameBoxArtImage";
-		this.vbox3.Add (this.GameBoxArtImage);
-		global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GameBoxArtImage]));
-		w16.Position = 2;
-		w16.Expand = false;
-		w16.Fill = false;
-		// Container child vbox3.Gtk.Box+BoxChild
-		this.GameDescriptionLabel = new global::Gtk.Label ();
-		this.GameDescriptionLabel.Name = "GameDescriptionLabel";
-		this.GameDescriptionLabel.Wrap = true;
-		this.vbox3.Add (this.GameDescriptionLabel);
-		global::Gtk.Box.BoxChild w17 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.GameDescriptionLabel]));
-		w17.Position = 3;
-		w17.Expand = false;
-		w17.Fill = false;
-		// Container child vbox3.Gtk.Box+BoxChild
-		this.alignment1 = new global::Gtk.Alignment (0.5F, 0.5F, 1F, 1F);
-		this.alignment1.Name = "alignment1";
-		this.alignment1.LeftPadding = ((uint)(30));
-		this.alignment1.RightPadding = ((uint)(30));
-		// Container child alignment1.Gtk.Container+ContainerChild
-		this.vbox6 = new global::Gtk.VBox ();
-		this.vbox6.Name = "vbox6";
-		this.vbox6.Spacing = 6;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GameGeneresLabel = new global::Gtk.Label ();
-		this.GameGeneresLabel.Name = "GameGeneresLabel";
-		this.GameGeneresLabel.UseMarkup = true;
-		this.GameGeneresLabel.Wrap = true;
-		this.vbox6.Add (this.GameGeneresLabel);
-		global::Gtk.Box.BoxChild w18 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GameGeneresLabel]));
-		w18.Position = 0;
-		w18.Expand = false;
-		w18.Fill = false;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GameReleaseDateLabel = new global::Gtk.Label ();
-		this.GameReleaseDateLabel.Name = "GameReleaseDateLabel";
-		this.GameReleaseDateLabel.UseMarkup = true;
-		this.GameReleaseDateLabel.Wrap = true;
-		this.vbox6.Add (this.GameReleaseDateLabel);
-		global::Gtk.Box.BoxChild w19 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GameReleaseDateLabel]));
-		w19.Position = 1;
-		w19.Expand = false;
-		w19.Fill = false;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GameRatingLabel = new global::Gtk.Label ();
-		this.GameRatingLabel.Name = "GameRatingLabel";
-		this.GameRatingLabel.UseMarkup = true;
-		this.GameRatingLabel.Wrap = true;
-		this.vbox6.Add (this.GameRatingLabel);
-		global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GameRatingLabel]));
-		w20.Position = 2;
-		w20.Expand = false;
-		w20.Fill = false;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GameDeveloperLabel = new global::Gtk.Label ();
-		this.GameDeveloperLabel.Name = "GameDeveloperLabel";
-		this.GameDeveloperLabel.UseMarkup = true;
-		this.GameDeveloperLabel.Wrap = true;
-		this.vbox6.Add (this.GameDeveloperLabel);
-		global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GameDeveloperLabel]));
-		w21.Position = 3;
-		w21.Expand = false;
-		w21.Fill = false;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GamePublisherLabel = new global::Gtk.Label ();
-		this.GamePublisherLabel.Name = "GamePublisherLabel";
-		this.GamePublisherLabel.UseMarkup = true;
-		this.GamePublisherLabel.Wrap = true;
-		this.vbox6.Add (this.GamePublisherLabel);
-		global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GamePublisherLabel]));
-		w22.Position = 4;
-		w22.Expand = false;
-		w22.Fill = false;
-		// Container child vbox6.Gtk.Box+BoxChild
-		this.GameCommunityRatingLabel = new global::Gtk.Label ();
-		this.GameCommunityRatingLabel.Name = "GameCommunityRatingLabel";
-		this.GameCommunityRatingLabel.UseMarkup = true;
-		this.GameCommunityRatingLabel.Wrap = true;
-		this.vbox6.Add (this.GameCommunityRatingLabel);
-		global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.vbox6 [this.GameCommunityRatingLabel]));
-		w23.Position = 5;
-		w23.Expand = false;
-		w23.Fill = false;
-		this.alignment1.Add (this.vbox6);
-		this.vbox3.Add (this.alignment1);
-		global::Gtk.Box.BoxChild w25 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.alignment1]));
-		w25.Position = 4;
-		w25.Expand = false;
-		w25.Fill = false;
-		w13.Add (this.vbox3);
-		this.GtkScrolledWindow2.Add (w13);
-		this.hpaned7.Add (this.GtkScrolledWindow2);
-		this.hpaned6.Add (this.hpaned7);
+		this.GameView = new global::EMUlsifier.GameViewWidget ();
+		this.GameView.WidthRequest = 800;
+		this.GameView.HeightRequest = 600;
+		this.GameView.Events = ((global::Gdk.EventMask)(256));
+		this.GameView.Name = "GameView";
+		this.hpaned6.Add (this.GameView);
 		this.vbox1.Add (this.hpaned6);
-		global::Gtk.Box.BoxChild w30 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
-		w30.Position = 1;
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hpaned6]));
+		w9.Position = 1;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
@@ -335,10 +152,9 @@ public partial class MainWindow
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.newAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
 		this.addAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
-		this.emuRemoveAction.Activated += new global::System.EventHandler (this.RemoveEmulatorButtonOnActivate);
-		this.emuEditAction.Activated += new global::System.EventHandler (this.EditEmulatorButtonOnActivate);
+		this.removeAction.Activated += new global::System.EventHandler (this.RemoveEmulatorButtonOnActivate);
+		this.editAction.Activated += new global::System.EventHandler (this.EditEmulatorButtonOnActivate);
 		this.ScrapeGameAction.Activated += new global::System.EventHandler (this.ScrapeGameOnActivate);
-		this.EmulatorTreeView.CursorChanged += new global::System.EventHandler (this.EmulatorOnCursorChange);
-		this.GameTreeView.CursorChanged += new global::System.EventHandler (this.GamesTreeOnCursorChange);
+		this.LibraryTreeView.CursorChanged += new global::System.EventHandler (this.EmulatorOnCursorChange);
 	}
 }
