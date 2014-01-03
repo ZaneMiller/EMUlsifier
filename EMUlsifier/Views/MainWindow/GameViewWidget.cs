@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Gdk;
 
 namespace EMUlsifier
@@ -6,29 +7,35 @@ namespace EMUlsifier
 	[System.ComponentModel.ToolboxItem (true)]
 	public partial class GameViewWidget : Gtk.Bin
 	{
-
-		private Game _model;
-		public Game Model { get{ return _model; } set{ _model = value; UpdateView(); }}
+		protected Game gameModel;
+		protected Emulator emuModel;
 
 		//Artwork
-		private const float BOXART_PADDING = 0.5f;
-		private int widgetWidth;
-		private Pixbuf bannerArt;
-		private Pixbuf boxArt;
+		protected const float BOXART_PADDING = 0.5f;
+		protected int widgetWidth;
+		protected Pixbuf bannerArt;
+		protected Pixbuf boxArt;
 
 		public GameViewWidget ()
 		{
 			this.Build ();
 		}
 
+		public void SetModels(Game game, Emulator emu)
+		{
+			gameModel = game;
+			emuModel = emu;
+			UpdateView ();
+		}
+
 		protected void ScaleImages ()
 		{
-			if (Model == null)
+			if (gameModel == null)
 				return;
 			//Box Art
 			if (boxArt != null)
 			{
-				float boxRatio = (float)widgetWidth / (float)boxArt.Width;
+				float boxRatio = Math.Min(((float)widgetWidth / (float)boxArt.Width), 1.0f);
 				int boxW = (int)Math.Round ((boxArt.Width * boxRatio) * BOXART_PADDING);
 				int boxH = (int)Math.Round ((boxArt.Height * boxRatio) * BOXART_PADDING);
 				GameBoxArtImage.Pixbuf = boxArt.ScaleSimple (boxW, boxH, InterpType.Bilinear);
@@ -36,7 +43,7 @@ namespace EMUlsifier
 			//Banner Art
 			if (bannerArt != null)
 			{
-				float bannerRatio = (float)widgetWidth / (float)bannerArt.Width;
+				float bannerRatio = Math.Min(((float)widgetWidth / (float)bannerArt.Width), 1.0f);
 				int bannerW = (int)Math.Round (bannerArt.Width * bannerRatio);
 				int bannerH = (int)Math.Round (bannerArt.Height * bannerRatio);
 				GameBannerImage.Pixbuf = bannerArt.ScaleSimple (bannerW, bannerH, InterpType.Bilinear);
@@ -49,61 +56,61 @@ namespace EMUlsifier
 		protected void UpdateView()
 		{
 			//If no model is set
-			if (Model == null)
+			if (gameModel == null)
 			{
 				bannerArt = null;
 				boxArt = null;
 				return;
 			}
-			GameTitleLabel.Text = string.Format ("<b><big>{0}</big></b>", Model.title);
+			GameTitleLabel.Text = string.Format ("<b><big>{0}</big></b>", gameModel.title);
 			//TODO: Game art
 			//Description
-			if (!string.IsNullOrWhiteSpace(Model.description)) {
-				GameDescriptionTextView.Buffer.Text = Model.description;
+			if (!string.IsNullOrWhiteSpace(gameModel.description)) {
+				GameDescriptionTextView.Buffer.Text = gameModel.description;
 				GameDescriptionTextView.Visible = true;
 			} else
 				GameDescriptionTextView.Visible = false;
 			//Genres
-			if (Model.genres.Count > 0) {
+			if (gameModel.genres.Count > 0) {
 				GameGeneresLabel.Text = "<b>Genres:</b>";
-				foreach (string g in Model.genres)
+				foreach (string g in gameModel.genres)
 					GameGeneresLabel.Text += string.Format (" {0}", g);
 				GameGeneresLabel.Visible = true;
 			} else
 				GameGeneresLabel.Visible = false;
 			//Release Date
-			if (Model.releaseDate != null) {
-				GameReleaseDateLabel.Text = string.Format("<b>Release Date:</b> {0}",Model.releaseDate.ToLongDateString ());
+			if (gameModel.releaseDate != null) {
+				GameReleaseDateLabel.Text = string.Format("<b>Release Date:</b> {0}",gameModel.releaseDate.ToLongDateString ());
 				GameReleaseDateLabel.Visible = true;
 			} else
 				GameReleaseDateLabel.Visible = false;
 			//Rating
-			if (!string.IsNullOrWhiteSpace (Model.rating)) {
-				GameRatingLabel.Text = string.Format ("<b>Rating:</b> {0}", Model.rating);
+			if (!string.IsNullOrWhiteSpace (gameModel.rating)) {
+				GameRatingLabel.Text = string.Format ("<b>Rating:</b> {0}", gameModel.rating);
 				GameRatingLabel.Visible = true;
 			} else
 				GameRatingLabel.Visible = false;
 			//Publisher
-			if (!string.IsNullOrWhiteSpace (Model.publisher)) {
-				GamePublisherLabel.Text = string.Format ("<b>Publisher:</b> {0}", Model.publisher);
+			if (!string.IsNullOrWhiteSpace (gameModel.publisher)) {
+				GamePublisherLabel.Text = string.Format ("<b>Publisher:</b> {0}", gameModel.publisher);
 				GamePublisherLabel.Visible = true;
 			} else
 				GamePublisherLabel.Visible = false;
 			//Developer
-			if (!string.IsNullOrWhiteSpace (Model.developer)) {
-				GameDeveloperLabel.Text = string.Format ("<b>Developer:</b> {0}", Model.developer);
+			if (!string.IsNullOrWhiteSpace (gameModel.developer)) {
+				GameDeveloperLabel.Text = string.Format ("<b>Developer:</b> {0}", gameModel.developer);
 				GameDeveloperLabel.Visible = true;
 			} else
 				GameDeveloperLabel.Visible = false;
 			//Community Rating
-			if (Model.communityRating > 0) {
-				GameCommunityRatingLabel.Text = string.Format ("<b>Community Rating:</b> {0}", Model.communityRating);
+			if (gameModel.communityRating > 0) {
+				GameCommunityRatingLabel.Text = string.Format ("<b>Community Rating:</b> {0}", gameModel.communityRating);
 				GameCommunityRatingLabel.Visible = true;
 			} else
 				GameCommunityRatingLabel.Visible = false;
 			//Banner Art
-			if (!string.IsNullOrWhiteSpace (Model.bannerArtPath)) {
-				Pixbuf pixbuf = new Pixbuf (Model.bannerArtPath);
+			if (!string.IsNullOrWhiteSpace (gameModel.bannerArtPath)) {
+				Pixbuf pixbuf = new Pixbuf (gameModel.bannerArtPath);
 				GameBannerImage.Visible = true;
 				bannerArt = pixbuf;
 			} else
@@ -112,8 +119,8 @@ namespace EMUlsifier
 				GameBannerImage.Visible = false;
 			}
 			//Box Art
-			if (!string.IsNullOrWhiteSpace (Model.boxArtPath)) {
-				Pixbuf pixbuf = new Pixbuf (Model.boxArtPath);
+			if (!string.IsNullOrWhiteSpace (gameModel.boxArtPath)) {
+				Pixbuf pixbuf = new Pixbuf (gameModel.boxArtPath);
 				GameBoxArtImage.Visible = true;
 				boxArt = pixbuf;
 			} else
@@ -138,6 +145,13 @@ namespace EMUlsifier
 		{
 			widgetWidth = args.Allocation.Width;
 			ScaleImages ();
+		}
+
+		protected void LaunchGameOnClick (object sender, EventArgs e)
+		{
+			string args = emuModel.args.Replace (Emulator.ROM_PLACEHOLDER, gameModel.filePath);
+			Console.WriteLine (emuModel.args);
+			Process.Start (emuModel.path, args);
 		}
 	}
 }

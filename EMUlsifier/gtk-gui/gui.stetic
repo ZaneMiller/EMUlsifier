@@ -8,76 +8,66 @@
     <widget-library name="../bin/Debug/EMUlsifier.exe" internal="true" />
     <widget-library name="../../../../../../../Program Files (x86)/Xamarin Studio/AddIns/MonoDevelop.GtkCore/libstetic.dll" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="1295 707">
+  <widget class="Gtk.Window" id="MainWindow" design-size="1295 749">
     <action-group name="Default">
-      <action id="FileAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes">File</property>
-        <property name="ShortLabel" translatable="yes">File</property>
-      </action>
-      <action id="ActionsAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes">Actions</property>
-        <property name="ShortLabel" translatable="yes">Actions</property>
-      </action>
-      <action id="HelpAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes">Help</property>
-        <property name="ShortLabel" translatable="yes">Help</property>
-      </action>
-      <action id="refreshAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes" />
-        <property name="StockId">gtk-refresh</property>
-      </action>
-      <action id="newAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes" />
-        <property name="StockId">gtk-new</property>
-        <property name="Tooltip" translatable="yes">Add Emulator</property>
-        <signal name="Activated" handler="AddEmulatorOnActivate" />
-      </action>
       <action id="addAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="StockId">gtk-add</property>
         <signal name="Activated" handler="AddEmulatorOnActivate" />
       </action>
-      <action id="addAction1">
+      <action id="editAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
-        <property name="StockId">gtk-add</property>
+        <property name="Sensitive">False</property>
+        <property name="StockId">gtk-edit</property>
+        <signal name="Activated" handler="EditButtonOnActivate" />
       </action>
       <action id="removeAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="Sensitive">False</property>
         <property name="StockId">gtk-remove</property>
-        <property name="Tooltip" translatable="yes">Remove Emulator</property>
         <signal name="Activated" handler="RemoveEmulatorButtonOnActivate" />
       </action>
-      <action id="editAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes" />
-        <property name="Sensitive">False</property>
-        <property name="StockId">gtk-edit</property>
-        <property name="Tooltip" translatable="yes">Edit Emulator</property>
-        <signal name="Activated" handler="EditEmulatorButtonOnActivate" />
-      </action>
-      <action id="EditGameAction">
-        <property name="Type">Action</property>
-        <property name="Label" translatable="yes" />
-        <property name="Sensitive">False</property>
-        <property name="StockId">gtk-edit</property>
-        <property name="Tooltip" translatable="yes">Edit Game</property>
-      </action>
-      <action id="ScrapeGameAction">
+      <action id="refreshAction">
         <property name="Type">Action</property>
         <property name="Label" translatable="yes" />
         <property name="Sensitive">False</property>
         <property name="StockId">gtk-refresh</property>
-        <property name="Tooltip" translatable="yes">Scrape Game Information</property>
         <signal name="Activated" handler="ScrapeGameOnActivate" />
+      </action>
+      <action id="FileAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">File</property>
+        <property name="ShortLabel" translatable="yes">File</property>
+      </action>
+      <action id="EditAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Edit</property>
+        <property name="ShortLabel" translatable="yes">Edit</property>
+      </action>
+      <action id="HelpAction">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes">Help</property>
+        <property name="ShortLabel" translatable="yes">Help</property>
+      </action>
+      <action id="addAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="StockId">gtk-add</property>
+      </action>
+      <action id="removeAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="Sensitive">False</property>
+        <property name="StockId">gtk-remove</property>
+      </action>
+      <action id="editAction1">
+        <property name="Type">Action</property>
+        <property name="Label" translatable="yes" />
+        <property name="Sensitive">False</property>
+        <property name="StockId">gtk-edit</property>
       </action>
       <action id="refreshAction1">
         <property name="Type">Action</property>
@@ -101,7 +91,7 @@
             <property name="MemberName" />
             <node name="menubar2" type="Menubar">
               <node type="Menu" action="FileAction" />
-              <node type="Menu" action="ActionsAction" />
+              <node type="Menu" action="EditAction" />
               <node type="Menu" action="HelpAction" />
             </node>
           </widget>
@@ -117,7 +107,7 @@
             <property name="MemberName" />
             <property name="WidthRequest">250</property>
             <property name="CanFocus">True</property>
-            <property name="Position">250</property>
+            <property name="Position">300</property>
             <child>
               <widget class="Gtk.VBox" id="vbox4">
                 <property name="MemberName" />
@@ -125,7 +115,7 @@
                 <child>
                   <widget class="Gtk.Label" id="label1">
                     <property name="MemberName" />
-                    <property name="LabelProp" translatable="yes">&lt;b&gt;Emulators&lt;/b&gt;</property>
+                    <property name="LabelProp" translatable="yes">&lt;b&gt;Library&lt;/b&gt;</property>
                     <property name="UseMarkup">True</property>
                   </widget>
                   <packing>
@@ -136,20 +126,19 @@
                   </packing>
                 </child>
                 <child>
-                  <widget class="Gtk.Toolbar" id="EmulatorsToolbar">
+                  <widget class="Gtk.Toolbar" id="toolbar1">
                     <property name="MemberName" />
                     <property name="ShowArrow">False</property>
-                    <property name="ButtonStyle">Icons</property>
-                    <node name="EmulatorsToolbar" type="Toolbar">
+                    <node name="toolbar1" type="Toolbar">
                       <node type="Toolitem" action="addAction" />
                       <node type="Toolitem" action="removeAction" />
                       <node type="Toolitem" action="editAction" />
-                      <node type="Toolitem" action="refreshAction1" />
+                      <node type="Toolitem" action="refreshAction" />
                     </node>
                   </widget>
                   <packing>
                     <property name="Position">1</property>
-                    <property name="AutoSize">False</property>
+                    <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
                   </packing>
@@ -1096,6 +1085,24 @@
                     <property name="AutoSize">True</property>
                     <property name="Expand">False</property>
                     <property name="Fill">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="Gtk.Button" id="button1">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="Type">TextAndIcon</property>
+                    <property name="Icon">stock:gtk-jump-to LargeToolbar</property>
+                    <property name="Label" translatable="yes">Launch Game</property>
+                    <property name="UseUnderline">True</property>
+                    <signal name="Clicked" handler="LaunchGameOnClick" />
+                  </widget>
+                  <packing>
+                    <property name="Position">5</property>
+                    <property name="AutoSize">True</property>
+                    <property name="Expand">False</property>
+                    <property name="Fill">False</property>
+                    <property name="Padding">20</property>
                   </packing>
                 </child>
               </widget>

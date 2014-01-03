@@ -14,34 +14,17 @@ namespace EMUlsifier
 
 		private const string LIBRARY_FILE_NAME = "Library.xml";
 
-		public static Exception LoadLibrary()
+		public static void LoadLibrary()
 		{
-			if (File.Exists (LIBRARY_FILE_NAME)) {
-				using (FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.OpenOrCreate)) {
-					try {
-						emulators = (List<Emulator>)xs.Deserialize (fs);
-					} catch (Exception e) {
-						return e;
-					}
-				}
-			}
-			return null;
+			if (File.Exists (LIBRARY_FILE_NAME))
+				using (FileStream fs = new FileStream (LIBRARY_FILE_NAME, FileMode.OpenOrCreate))
+					emulators = (List<Emulator>)xs.Deserialize (fs);
 		}
 
-		public static Exception SaveLibrary()
+		public static void SaveLibrary()
 		{
 			using (StreamWriter sw = new StreamWriter(LIBRARY_FILE_NAME, false))
-			{
-				try
-				{
-					xs.Serialize(sw, emulators);
-				}
-				catch(Exception e)
-				{
-					return e;
-				}
-			}
-			return null;
+				xs.Serialize(sw, emulators);
 		}
 
 	}

@@ -32,8 +32,11 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	protected void SaveLibrary()
 	{
-		Exception e = EmulatorController.SaveLibrary ();
-		if (e != null)
+		try
+		{
+			EmulatorController.SaveLibrary ();
+		}
+		catch (Exception e)
 		{
 			MessageDialog errorDialog = new MessageDialog (this,
 				                            DialogFlags.Modal,
@@ -47,8 +50,11 @@ public partial class MainWindow: Gtk.Window
 
 	protected void LoadLibrary()
 	{
-		Exception e = EmulatorController.LoadLibrary();
-		if (e != null)
+		try
+		{
+			EmulatorController.LoadLibrary();
+		}
+		catch (Exception e)
 		{
 			MessageDialog md = new MessageDialog (this,
 				DialogFlags.Modal,
@@ -138,9 +144,9 @@ public partial class MainWindow: Gtk.Window
 		{
 			object selected = model.GetValue (iter, 0);
 			if (selected.GetType () == typeof(Emulator))
-				OnEmulatorSelected ((Emulator)selected);
+				OnEmulatorSelected ((Emulator)selected, model);
 			else if (selected.GetType () == typeof(Game))
-				OnGameSelected ((Game)selected);
+				OnGameSelected ((Game)selected, model, iter);
 		}
 	}
 
@@ -148,7 +154,7 @@ public partial class MainWindow: Gtk.Window
 	/// Called when an emulator is selected in the libaray
 	/// </summary>
 	/// <param name="emu">Emu.</param>
-	protected void OnEmulatorSelected (Emulator emu)
+	protected void OnEmulatorSelected (Emulator emu, TreeModel model)
 	{
 		activeEmulator = emu;
 		activeGame = null;
@@ -159,11 +165,17 @@ public partial class MainWindow: Gtk.Window
 	/// Called when a game is selected in the libaray
 	/// </summary>
 	/// <param name="game">Game.</param>
-	protected void OnGameSelected(Game game)
+	protected void OnGameSelected(Game game, TreeModel model, TreeIter child)
 	{
 		activeEmulator = null;
 		activeGame = game;
-		GameView.Model = activeGame;
+
+		TreeIter iter;
+		if (model.IterParent (out iter, child))
+			activeEmulator = (Emulator)model.GetValue (iter, 0);
+
+		GameView.SetModels (activeGame, activeEmulator);
+
 		SetActionSensitivity ();
 	}
 
@@ -171,7 +183,7 @@ public partial class MainWindow: Gtk.Window
 	{
 		editAction.Sensitive = (activeEmulator != null || activeGame != null);
 		removeAction.Sensitive = (activeEmulator != null && activeGame == null);
-		refreshAction.Sensitive = (activeEmulator == null && activeGame != null);
+		refreshAction.Sensitive = (activeEmulator != null && activeGame != null);
 	}
 
 	/// <summary>
@@ -196,7 +208,7 @@ public partial class MainWindow: Gtk.Window
 	/// </summary>
 	/// <param name="sender">Sender.</param>
 	/// <param name="e">E.</param>
-	protected void EditEmulatorButtonOnActivate (object sender, EventArgs e)
+	protected void EditButtonOnActivate (object sender, EventArgs e)
 	{
 		EmulatorDialog ed = new EmulatorDialog (activeEmulator);
 		if ((ResponseType)ed.Run () == ResponseType.Ok)
@@ -285,24 +297,24 @@ public partial class MainWindow: Gtk.Window
 		//Start the data fetching thread
 		Thread thr = new Thread (new ThreadStart (delegate {
 			//Fetch the data
-			ScraperController.UpdateGame(activeGame, searchId);
-			Application.Invoke(delegate {
+			ScraperController.UpdateGame (activeGame, searchId);
+			Application.Invoke (delegate {
 				//Close the dialog in the main thread
-				ipd.Destroy();
-				GameView.Model = activeGame;
+				ipd.Destroy ();
+				GameView.SetModels(activeGame, activeEmulator);
+
 			});
 		}));
 
 		thr.Start ();
 
 		//If cancled close the dialog and abort the thread
-		if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive)
-		{
+		if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive) {
 			thr.Abort ();
 			ipd.Destroy ();
 		}
-
 	}
+
 }
 
 

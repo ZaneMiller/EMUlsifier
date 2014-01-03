@@ -18,7 +18,6 @@ namespace EMUlsifier
 		public string boxArtPath;
 
 
-
 		public Game ()
 		{
 		}

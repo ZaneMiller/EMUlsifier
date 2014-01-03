@@ -18,6 +18,7 @@ namespace EMUlsifier
 		private global::Gtk.Label GameDeveloperLabel;
 		private global::Gtk.Label GamePublisherLabel;
 		private global::Gtk.Label GameCommunityRatingLabel;
+		private global::Gtk.Button button1;
 
 		protected virtual void Build ()
 		{
@@ -155,6 +156,21 @@ namespace EMUlsifier
 			w13.Position = 4;
 			w13.Expand = false;
 			w13.Fill = false;
+			// Container child vbox3.Gtk.Box+BoxChild
+			this.button1 = new global::Gtk.Button ();
+			this.button1.CanFocus = true;
+			this.button1.Name = "button1";
+			this.button1.UseUnderline = true;
+			this.button1.Label = global::Mono.Unix.Catalog.GetString ("Launch Game");
+			global::Gtk.Image w14 = new global::Gtk.Image ();
+			w14.Pixbuf = global::Stetic.IconLoader.LoadIcon (this, "gtk-jump-to", global::Gtk.IconSize.LargeToolbar);
+			this.button1.Image = w14;
+			this.vbox3.Add (this.button1);
+			global::Gtk.Box.BoxChild w15 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.button1]));
+			w15.Position = 5;
+			w15.Expand = false;
+			w15.Fill = false;
+			w15.Padding = ((uint)(20));
 			w1.Add (this.vbox3);
 			this.GameViewScroll.Add (w1);
 			this.Add (this.GameViewScroll);
@@ -163,6 +179,7 @@ namespace EMUlsifier
 			}
 			this.Hide ();
 			this.SizeAllocated += new global::Gtk.SizeAllocatedHandler (this.GameViewOnSizeAllocated);
+			this.button1.Clicked += new global::System.EventHandler (this.LaunchGameOnClick);
 		}
 	}
 }

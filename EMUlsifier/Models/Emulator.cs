@@ -10,6 +10,8 @@ namespace EMUlsifier
 	/// </summary>
 	public class Emulator
 	{
+		public const string ROM_PLACEHOLDER = "%ROM%";
+
 		/// <summary>
 		/// Display name of the emulator
 		/// </summary>
@@ -21,7 +23,7 @@ namespace EMUlsifier
 		/// <summary>
 		/// Launch arguments for the emulator
 		/// </summary>
-		public string args = "%ROM%";
+		public string args = '"' + ROM_PLACEHOLDER + '"';
 		/// <summary>
 		/// The system that the emulator emulates
 		/// </summary>

@@ -4,24 +4,23 @@
 public partial class MainWindow
 {
 	private global::Gtk.UIManager UIManager;
-	private global::Gtk.Action FileAction;
-	private global::Gtk.Action ActionsAction;
-	private global::Gtk.Action HelpAction;
-	private global::Gtk.Action refreshAction;
-	private global::Gtk.Action newAction;
 	private global::Gtk.Action addAction;
-	private global::Gtk.Action addAction1;
-	private global::Gtk.Action removeAction;
 	private global::Gtk.Action editAction;
-	private global::Gtk.Action EditGameAction;
-	private global::Gtk.Action ScrapeGameAction;
+	private global::Gtk.Action removeAction;
+	private global::Gtk.Action refreshAction;
+	private global::Gtk.Action FileAction;
+	private global::Gtk.Action EditAction;
+	private global::Gtk.Action HelpAction;
+	private global::Gtk.Action addAction1;
+	private global::Gtk.Action removeAction1;
+	private global::Gtk.Action editAction1;
 	private global::Gtk.Action refreshAction1;
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar2;
 	private global::Gtk.HPaned hpaned6;
 	private global::Gtk.VBox vbox4;
 	private global::Gtk.Label label1;
-	private global::Gtk.Toolbar EmulatorsToolbar;
+	private global::Gtk.Toolbar toolbar1;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TreeView LibraryTreeView;
 	private global::EMUlsifier.GameViewWidget GameView;
@@ -32,35 +31,34 @@ public partial class MainWindow
 		// Widget MainWindow
 		this.UIManager = new global::Gtk.UIManager ();
 		global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
+		this.addAction = new global::Gtk.Action ("addAction", null, null, "gtk-add");
+		w1.Add (this.addAction, null);
+		this.editAction = new global::Gtk.Action ("editAction", null, null, "gtk-edit");
+		this.editAction.Sensitive = false;
+		w1.Add (this.editAction, null);
+		this.removeAction = new global::Gtk.Action ("removeAction", null, null, "gtk-remove");
+		this.removeAction.Sensitive = false;
+		w1.Add (this.removeAction, null);
+		this.refreshAction = new global::Gtk.Action ("refreshAction", null, null, "gtk-refresh");
+		this.refreshAction.Sensitive = false;
+		w1.Add (this.refreshAction, null);
 		this.FileAction = new global::Gtk.Action ("FileAction", global::Mono.Unix.Catalog.GetString ("File"), null, null);
 		this.FileAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("File");
 		w1.Add (this.FileAction, null);
-		this.ActionsAction = new global::Gtk.Action ("ActionsAction", global::Mono.Unix.Catalog.GetString ("Actions"), null, null);
-		this.ActionsAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Actions");
-		w1.Add (this.ActionsAction, null);
+		this.EditAction = new global::Gtk.Action ("EditAction", global::Mono.Unix.Catalog.GetString ("Edit"), null, null);
+		this.EditAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Edit");
+		w1.Add (this.EditAction, null);
 		this.HelpAction = new global::Gtk.Action ("HelpAction", global::Mono.Unix.Catalog.GetString ("Help"), null, null);
 		this.HelpAction.ShortLabel = global::Mono.Unix.Catalog.GetString ("Help");
 		w1.Add (this.HelpAction, null);
-		this.refreshAction = new global::Gtk.Action ("refreshAction", null, null, "gtk-refresh");
-		w1.Add (this.refreshAction, null);
-		this.newAction = new global::Gtk.Action ("newAction", null, global::Mono.Unix.Catalog.GetString ("Add Emulator"), "gtk-new");
-		w1.Add (this.newAction, null);
-		this.addAction = new global::Gtk.Action ("addAction", null, null, "gtk-add");
-		w1.Add (this.addAction, null);
 		this.addAction1 = new global::Gtk.Action ("addAction1", null, null, "gtk-add");
 		w1.Add (this.addAction1, null);
-		this.removeAction = new global::Gtk.Action ("removeAction", null, global::Mono.Unix.Catalog.GetString ("Remove Emulator"), "gtk-remove");
-		this.removeAction.Sensitive = false;
-		w1.Add (this.removeAction, null);
-		this.editAction = new global::Gtk.Action ("editAction", null, global::Mono.Unix.Catalog.GetString ("Edit Emulator"), "gtk-edit");
-		this.editAction.Sensitive = false;
-		w1.Add (this.editAction, null);
-		this.EditGameAction = new global::Gtk.Action ("EditGameAction", null, global::Mono.Unix.Catalog.GetString ("Edit Game"), "gtk-edit");
-		this.EditGameAction.Sensitive = false;
-		w1.Add (this.EditGameAction, null);
-		this.ScrapeGameAction = new global::Gtk.Action ("ScrapeGameAction", null, global::Mono.Unix.Catalog.GetString ("Scrape Game Information"), "gtk-refresh");
-		this.ScrapeGameAction.Sensitive = false;
-		w1.Add (this.ScrapeGameAction, null);
+		this.removeAction1 = new global::Gtk.Action ("removeAction1", null, null, "gtk-remove");
+		this.removeAction1.Sensitive = false;
+		w1.Add (this.removeAction1, null);
+		this.editAction1 = new global::Gtk.Action ("editAction1", null, null, "gtk-edit");
+		this.editAction1.Sensitive = false;
+		w1.Add (this.editAction1, null);
 		this.refreshAction1 = new global::Gtk.Action ("refreshAction1", null, null, "gtk-refresh");
 		this.refreshAction1.Sensitive = false;
 		w1.Add (this.refreshAction1, null);
@@ -77,8 +75,8 @@ public partial class MainWindow
 		this.vbox1.Spacing = 6;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.UIManager.AddUiFromString ("<ui><menubar name=\'menubar2\'><menu name=\'FileAction\' action=\'FileAction\'/><menu n" +
-		"ame=\'ActionsAction\' action=\'ActionsAction\'/><menu name=\'HelpAction\' action=\'Help" +
-		"Action\'/></menubar></ui>");
+		"ame=\'EditAction\' action=\'EditAction\'/><menu name=\'HelpAction\' action=\'HelpAction" +
+		"\'/></menubar></ui>");
 		this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 		this.menubar2.Name = "menubar2";
 		this.vbox1.Add (this.menubar2);
@@ -91,7 +89,7 @@ public partial class MainWindow
 		this.hpaned6.WidthRequest = 250;
 		this.hpaned6.CanFocus = true;
 		this.hpaned6.Name = "hpaned6";
-		this.hpaned6.Position = 250;
+		this.hpaned6.Position = 300;
 		// Container child hpaned6.Gtk.Paned+PanedChild
 		this.vbox4 = new global::Gtk.VBox ();
 		this.vbox4.Name = "vbox4";
@@ -99,7 +97,7 @@ public partial class MainWindow
 		// Container child vbox4.Gtk.Box+BoxChild
 		this.label1 = new global::Gtk.Label ();
 		this.label1.Name = "label1";
-		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Emulators</b>");
+		this.label1.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Library</b>");
 		this.label1.UseMarkup = true;
 		this.vbox4.Add (this.label1);
 		global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.label1]));
@@ -107,13 +105,15 @@ public partial class MainWindow
 		w3.Expand = false;
 		w3.Fill = false;
 		// Container child vbox4.Gtk.Box+BoxChild
-		this.UIManager.AddUiFromString (@"<ui><toolbar name='EmulatorsToolbar'><toolitem name='addAction' action='addAction'/><toolitem name='removeAction' action='removeAction'/><toolitem name='editAction' action='editAction'/><toolitem name='refreshAction1' action='refreshAction1'/></toolbar></ui>");
-		this.EmulatorsToolbar = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/EmulatorsToolbar")));
-		this.EmulatorsToolbar.Name = "EmulatorsToolbar";
-		this.EmulatorsToolbar.ShowArrow = false;
-		this.EmulatorsToolbar.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
-		this.vbox4.Add (this.EmulatorsToolbar);
-		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.EmulatorsToolbar]));
+		this.UIManager.AddUiFromString ("<ui><toolbar name=\'toolbar1\'><toolitem name=\'addAction\' action=\'addAction\'/><tool" +
+		"item name=\'removeAction\' action=\'removeAction\'/><toolitem name=\'editAction\' acti" +
+		"on=\'editAction\'/><toolitem name=\'refreshAction\' action=\'refreshAction\'/></toolba" +
+		"r></ui>");
+		this.toolbar1 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar1")));
+		this.toolbar1.Name = "toolbar1";
+		this.toolbar1.ShowArrow = false;
+		this.vbox4.Add (this.toolbar1);
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.toolbar1]));
 		w4.Position = 1;
 		w4.Expand = false;
 		w4.Fill = false;
@@ -150,11 +150,10 @@ public partial class MainWindow
 		}
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
-		this.newAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
 		this.addAction.Activated += new global::System.EventHandler (this.AddEmulatorOnActivate);
+		this.editAction.Activated += new global::System.EventHandler (this.EditButtonOnActivate);
 		this.removeAction.Activated += new global::System.EventHandler (this.RemoveEmulatorButtonOnActivate);
-		this.editAction.Activated += new global::System.EventHandler (this.EditEmulatorButtonOnActivate);
-		this.ScrapeGameAction.Activated += new global::System.EventHandler (this.ScrapeGameOnActivate);
+		this.refreshAction.Activated += new global::System.EventHandler (this.ScrapeGameOnActivate);
 		this.LibraryTreeView.CursorChanged += new global::System.EventHandler (this.EmulatorOnCursorChange);
 	}
 }
