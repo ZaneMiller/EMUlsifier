@@ -74,6 +74,7 @@
       <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
     <EmbeddedResource Include="icons\1388384270_search.png" />
+    <EmbeddedResource Include="icons\1388794018_icon-game-controller-b.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -85,7 +86,6 @@
     <Compile Include="Models\Emulator.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Controllers\ScraperController.cs" />
-    <Compile Include="Models\Scraper.cs" />
     <Compile Include="Views\MainWindow.cs" />
     <Compile Include="Views\EmulatorDialog.cs" />
     <Compile Include="gtk-gui\EMUlsifier.EmulatorDialog.cs" />
@@ -95,6 +95,10 @@
     <Compile Include="gtk-gui\EMUlsifier.IndeterminateProgressDialog.cs" />
     <Compile Include="gtk-gui\EMUlsifier.GameViewWidget.cs" />
     <Compile Include="Views\MainWindow\GameViewWidget.cs" />
+    <Compile Include="Views\Scraping\GameSearchNameEntryDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.GameSearchNameEntryDialog.cs" />
+    <Compile Include="Views\GameDialog.cs" />
+    <Compile Include="gtk-gui\EMUlsifier.GameDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -210,10 +210,23 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">E.</param>
 	protected void EditButtonOnActivate (object sender, EventArgs e)
 	{
-		EmulatorDialog ed = new EmulatorDialog (activeEmulator);
-		if ((ResponseType)ed.Run () == ResponseType.Ok)
-			ed.UpdateEmulator ();
-		ed.Destroy ();
+		if (activeGame != null)
+		{
+			GameDialog gd = new GameDialog (activeGame);
+			if ((ResponseType)gd.Run () == ResponseType.Ok)
+			{
+				gd.UpdateGame ();
+				GameView.UpdateView ();
+			}
+			gd.Destroy ();
+		}
+		else if (activeEmulator != null)
+		{
+			EmulatorDialog ed = new EmulatorDialog (activeEmulator);
+			if ((ResponseType)ed.Run () == ResponseType.Ok)
+				ed.UpdateEmulator ();
+			ed.Destroy ();
+		}
 	}
 
 	/// <summary>
@@ -246,28 +259,38 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="e">E.</param>
 	protected void ScrapeGameOnActivate (object sender, EventArgs e)
 	{
-		IndeterminateProgressDialog ipd = new IndeterminateProgressDialog ("Fetching Games", "Fetching search results for game...");
+		SearchForGame ();
+	}
 
-		//Start the search thread
-		Thread thr = new Thread (new ThreadStart (delegate {
-			//Search
-			List<Tuple<string, string>> result = ScraperController.Search (activeGame.title, activeEmulator.system);
-			//After search close the dialog and run the after search method
-			Application.Invoke (delegate {
+	protected void SearchForGame ()
+	{
+		GameSearchNameEntryDialog gsned = new GameSearchNameEntryDialog (activeGame.title);
+		if ((ResponseType)gsned.Run () == ResponseType.Ok) {
+			gsned.Destroy ();
+			IndeterminateProgressDialog ipd = new IndeterminateProgressDialog ("Fetching Games", "Fetching search results for game...");
+
+			//Start the search thread
+			Thread thr = new Thread (new ThreadStart (delegate {
+				//Search
+				List<Tuple<string, string>> result = ScraperController.Search (gsned.searchTerm, activeEmulator.system);
+				//After search close the dialog and run the after search method
+				Application.Invoke (delegate {
+					ipd.Destroy ();
+					AfterGameSearch (result);
+				});
+			}));
+
+			thr.Start ();
+
+			//Open the progress dialog, appears out of order, but isn't because of the above thread
+			//If the cancel button is pressed, stop the search thread and destory the dialog
+			if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive) {
+				thr.Abort ();
 				ipd.Destroy ();
-				AfterGameSearch (result);
-			});
-		}));
+			}
+		} else
+			gsned.Destroy ();
 
-		thr.Start ();
-
-		//Open the progress dialog, appears out of order, but isn't because of the above thread
-		//If the cancel button is pressed, stop the search thread and destory the dialog
-		if ((ResponseType)ipd.Run () == ResponseType.Cancel && thr.IsAlive)
-		{
-			thr.Abort ();
-			ipd.Destroy ();
-		}
 	}
 
 	/// <summary>
@@ -276,9 +299,9 @@ public partial class MainWindow: Gtk.Window
 	/// <param name="result">Result.</param>
 	protected void AfterGameSearch(List<Tuple<string, string>> result)
 	{
-		if (result.Count == 0) {
-			//TODO: Enter Name
-		}
+		//If no result open the name entry dialog again (i.e. start the search process over)
+		if (result.Count == 0)
+			SearchForGame ();
 		else
 		{
 			GameSearchResultDialog gsrd = new GameSearchResultDialog (result);

@@ -53,7 +53,7 @@ namespace EMUlsifier
 		/// <summary>
 		/// Updates the view.
 		/// </summary>
-		protected void UpdateView()
+		public void UpdateView()
 		{
 			//If no model is set
 			if (gameModel == null)
@@ -103,7 +103,7 @@ namespace EMUlsifier
 			} else
 				GameDeveloperLabel.Visible = false;
 			//Community Rating
-			if (gameModel.communityRating > 0) {
+			if (!string.IsNullOrWhiteSpace (gameModel.communityRating)) {
 				GameCommunityRatingLabel.Text = string.Format ("<b>Community Rating:</b> {0}", gameModel.communityRating);
 				GameCommunityRatingLabel.Visible = true;
 			} else

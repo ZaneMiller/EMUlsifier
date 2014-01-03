@@ -82,7 +82,6 @@ namespace EMUlsifier
 			w5.Padding = ((uint)(10));
 			// Container child vbox3.Gtk.Box+BoxChild
 			this.alignment1 = new global::Gtk.Alignment (0.5F, 0.5F, 1F, 1F);
-			this.alignment1.Name = "alignment1";
 			this.alignment1.LeftPadding = ((uint)(30));
 			this.alignment1.RightPadding = ((uint)(30));
 			this.alignment1.BottomPadding = ((uint)(20));

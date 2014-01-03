@@ -77,7 +77,6 @@ namespace EMUlsifier
 			w2.Fill = false;
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.alignment1 = new global::Gtk.Alignment (0F, 0.5F, 1F, 1F);
-			this.alignment1.Name = "alignment1";
 			// Container child alignment1.Gtk.Container+ContainerChild
 			this.vbox2 = new global::Gtk.VBox ();
 			this.vbox2.Name = "vbox2";

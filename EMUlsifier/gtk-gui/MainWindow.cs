@@ -112,6 +112,7 @@ public partial class MainWindow
 		this.toolbar1 = ((global::Gtk.Toolbar)(this.UIManager.GetWidget ("/toolbar1")));
 		this.toolbar1.Name = "toolbar1";
 		this.toolbar1.ShowArrow = false;
+		this.toolbar1.ToolbarStyle = ((global::Gtk.ToolbarStyle)(0));
 		this.vbox4.Add (this.toolbar1);
 		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox4 [this.toolbar1]));
 		w4.Position = 1;
